@@ -1,14 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { useAuthStore } from '@renderer/stores/authStore';
+import { usePlanLimits } from '@renderer/hooks/usePlanLimits';
 import { Card, CardContent, CardHeader, CardTitle } from '@renderer/components/ui/card';
 import { Button } from '@renderer/components/ui/button';
 import { Badge } from '@renderer/components/ui/badge';
 import { UpgradePrompt } from '@renderer/components/upgrade/UpgradePrompt';
+import { LimitIndicator } from '@renderer/components/features/LimitIndicator';
+import { FeatureLock } from '@renderer/components/features/FeatureLock';
 import { HardDrive, Zap, Shield, Activity } from 'lucide-react';
 import { formatBytes } from '@renderer/lib/utils';
 
 export function Dashboard() {
   const { user, isProUser } = useAuthStore();
+  const navigate = useNavigate();
+  const { checkScanLimit, checkCleanupLimit } = usePlanLimits();
+  const [usage, setUsage] = useState<{ scan: any; cleanup: any } | null>(null);
+
+  useEffect(() => {
+    loadUsage();
+  }, []);
+
+  const loadUsage = async () => {
+    const [scanUsage, cleanupUsage] = await Promise.all([
+      checkScanLimit(),
+      checkCleanupLimit(0) // Check current usage without adding
+    ]);
+    setUsage({ scan: scanUsage, cleanup: cleanupUsage });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -76,12 +95,21 @@ export function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {isProUser() ? 'Unlimited' : '0/500 MB'}
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                {isProUser() ? 'Pro plan' : 'Monthly limit'}
-              </p>
+              {usage ? (
+                <>
+                  <div className="text-2xl font-bold">
+                    {isProUser() ? 'Unlimited' : `${usage.scan.used}/${usage.scan.limit} scans`}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {isProUser() ? 'Pro plan' : 'Daily limit'}
+                  </p>
+                </>
+              ) : (
+                <div className="animate-pulse">
+                  <div className="h-8 bg-gray-200 rounded w-24 mb-1"></div>
+                  <div className="h-3 bg-gray-200 rounded w-16"></div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -93,22 +121,32 @@ export function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Button variant="outline" className="h-24 flex-col gap-2">
+              <Button 
+                variant="outline" 
+                className="h-24 flex-col gap-2"
+                onClick={() => navigate({ to: '/smart-scan' })}
+              >
                 <Zap className="w-6 h-6" />
                 <span>Smart Scan</span>
               </Button>
-              <Button variant="outline" className="h-24 flex-col gap-2">
-                <HardDrive className="w-6 h-6" />
-                <span>System Junk</span>
-              </Button>
-              <Button variant="outline" className="h-24 flex-col gap-2">
-                <Shield className="w-6 h-6" />
-                <span>Privacy Scan</span>
-              </Button>
-              <Button variant="outline" className="h-24 flex-col gap-2">
-                <Activity className="w-6 h-6" />
-                <span>Optimization</span>
-              </Button>
+              <FeatureLock isLocked={!isProUser()} featureName="System Junk">
+                <Button variant="outline" className="h-24 flex-col gap-2 w-full">
+                  <HardDrive className="w-6 h-6" />
+                  <span>System Junk</span>
+                </Button>
+              </FeatureLock>
+              <FeatureLock isLocked={!isProUser()} featureName="Privacy Scan">
+                <Button variant="outline" className="h-24 flex-col gap-2 w-full">
+                  <Shield className="w-6 h-6" />
+                  <span>Privacy Scan</span>
+                </Button>
+              </FeatureLock>
+              <FeatureLock isLocked={!isProUser()} featureName="Optimization">
+                <Button variant="outline" className="h-24 flex-col gap-2 w-full">
+                  <Activity className="w-6 h-6" />
+                  <span>Optimization</span>
+                </Button>
+              </FeatureLock>
             </div>
           </CardContent>
         </Card>

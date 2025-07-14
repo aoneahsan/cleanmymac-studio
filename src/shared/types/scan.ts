@@ -8,6 +8,7 @@ export interface ScanProgress {
 
 export interface ScanCategory {
   id: string;
+  type: string;
   name: string;
   description: string;
   size: number;
@@ -27,6 +28,7 @@ export interface ScanItem {
 export interface ScanSummary {
   totalSpace: number;
   breakdown: Record<string, ScanCategory>;
+  categories: ScanCategory[];
   itemCount: number;
   scanTime: number;
   freeSpace?: number;

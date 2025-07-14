@@ -4,6 +4,7 @@ import { Scanning } from './pages/Scanning';
 import { ScanResults } from './pages/ScanResults';
 import { Dashboard } from './pages/Dashboard';
 import { Settings } from './pages/Settings';
+import { SmartScan } from './pages/SmartScan';
 import { AppLayout } from './components/layout/AppLayout';
 
 // Create root route
@@ -43,6 +44,12 @@ const settingsRoute = createRoute({
   component: Settings,
 });
 
+const smartScanRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/smart-scan',
+  component: SmartScan,
+});
+
 // Create the route tree
 const routeTree = rootRoute.addChildren([
   welcomeRoute,
@@ -50,6 +57,7 @@ const routeTree = rootRoute.addChildren([
   scanResultsRoute,
   dashboardRoute,
   settingsRoute,
+  smartScanRoute,
 ]);
 
 // Create the router

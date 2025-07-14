@@ -43,6 +43,39 @@ export function registerScannerHandlers() {
     }
   });
 
+  // Smart scan handlers for authenticated users
+  ipcMain.handle('scan:start', async (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    if (!win) throw new Error('Window not found');
+
+    const onProgress = (progress: ScanProgress) => {
+      win.webContents.send('scan:progress', progress);
+    };
+
+    try {
+      // Start the scan in background
+      scanner.performQuickScan(onProgress).then(results => {
+        win.webContents.send('scan:complete', results);
+      });
+      
+      return { started: true };
+    } catch (error) {
+      console.error('Scan start error:', error);
+      throw error;
+    }
+  });
+
+  ipcMain.handle('scan:complete', async (event) => {
+    // This is handled by the scan:start promise resolution
+    return new Promise((resolve) => {
+      const handleComplete = (_: any, results: ScanSummary) => {
+        ipcMain.removeListener('scan:complete', handleComplete);
+        resolve(results);
+      };
+      ipcMain.on('scan:complete', handleComplete);
+    });
+  });
+
   // Cancel scan handler
   ipcMain.handle('cancel-scan', async () => {
     scanner.cancelScan();

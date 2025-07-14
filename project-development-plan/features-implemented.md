@@ -67,15 +67,17 @@
 - **Type Safety**: Full TypeScript implementation
 - **Modular Structure**: Clean separation of concerns
 
-## 🔄 In Progress
+## ✅ Recent Additions
 
-### Feature Limitation System
-- Plan detection implemented
-- UI differentiation started
-- Need to implement:
-  - Usage tracking
-  - Limit enforcement
-  - Pro feature blocking
+### 8. Feature Limitation System
+- **Plan Limits Hook**: `usePlanLimits` for checking scan/cleanup limits
+- **Feature Lock Component**: Visual lock overlay for Pro features
+- **Limit Indicator Component**: Shows usage bars and warnings
+- **Smart Scan Page**: Full implementation with category selection
+- **Dashboard Integration**: Shows actual usage stats
+- **Firebase Usage Tracking**: `trackUsage` function implemented
+- **IPC Updates**: Added scan handlers for authenticated users
+- **Type Safety**: Fixed all TypeScript errors
 
 ## 📋 Next Steps
 

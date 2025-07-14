@@ -21,5 +21,14 @@ contextBridge.exposeInMainWorld('electron', {
     login: (email: string, password: string) => ipcRenderer.invoke('auth:login', email, password),
     logout: () => ipcRenderer.invoke('auth:logout'),
     getCurrentUser: () => ipcRenderer.invoke('auth:current-user')
+  },
+  ipcRenderer: {
+    invoke: (channel: string, ...args: any[]) => ipcRenderer.invoke(channel, ...args),
+    on: (channel: string, listener: (data: any) => void) => {
+      const wrappedListener = (_event: any, ...args: any[]) => listener(args[0]);
+      ipcRenderer.on(channel, wrappedListener);
+      // Return a function to remove the listener
+      return () => ipcRenderer.removeListener(channel, wrappedListener);
+    }
   }
 });

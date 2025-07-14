@@ -101,9 +101,12 @@ export class PreAuthScanner {
         itemsScanned: itemCount,
       });
 
+      const categories = Object.values(results);
+      
       return {
         totalSpace,
         breakdown: results,
+        categories,
         itemCount,
         scanTime: Date.now() - this.scanStartTime,
         freeSpace: await this.getFreeSpace(),
@@ -115,10 +118,6 @@ export class PreAuthScanner {
     }
   }
 
-  async performFullScan(options: any, onProgress: (progress: ScanProgress) => void): Promise<ScanSummary> {
-    // TODO: Implement full scan with all categories based on user plan
-    return this.performQuickScan(onProgress);
-  }
 
   cancelScan() {
     this.cancelled = true;
@@ -134,6 +133,7 @@ export class PreAuthScanner {
       
       return {
         id: 'user_cache',
+        type: 'cache',
         name: 'User Cache',
         description: 'Application caches and temporary files',
         size,
@@ -169,6 +169,7 @@ export class PreAuthScanner {
 
     return {
       id: 'logs',
+      type: 'logs',
       name: 'Log Files',
       description: 'Old system and application logs',
       size: totalSize,
@@ -202,6 +203,7 @@ export class PreAuthScanner {
 
       return {
         id: 'downloads',
+        type: 'downloads',
         name: 'Downloads Cleanup',
         description: 'Old downloads, DMG files, and installers',
         size: totalSize,
@@ -223,6 +225,7 @@ export class PreAuthScanner {
       
       return {
         id: 'trash',
+        type: 'trash',
         name: 'Trash',
         description: 'Files in your Trash',
         size,
@@ -305,5 +308,14 @@ export class PreAuthScanner {
       itemCount: 0,
       items: [],
     };
+  }
+
+  async performFullScan(
+    options: { userId: string; plan: string },
+    onProgress: (progress: ScanProgress) => void
+  ): Promise<ScanSummary> {
+    // For now, just use the quick scan
+    // TODO: Implement more comprehensive scanning based on plan
+    return this.performQuickScan(onProgress);
   }
 }

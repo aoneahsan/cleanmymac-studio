@@ -118,7 +118,10 @@
       "Bash(yarn fix-lint-errors:*)",
       "Bash(cat:*)",
       "Bash(yarn init:*)",
-      "Bash(yarn typecheck)"
+      "Bash(yarn typecheck)",
+      "Bash(yarn dlx:*)",
+      "Bash(npx shadcn-ui:*)",
+      "Bash(npx:*)"
     ],
     "deny": []
   }
