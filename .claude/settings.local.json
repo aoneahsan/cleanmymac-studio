@@ -121,7 +121,8 @@
       "Bash(yarn typecheck)",
       "Bash(yarn dlx:*)",
       "Bash(npx shadcn-ui:*)",
-      "Bash(npx:*)"
+      "Bash(npx:*)",
+      "Bash(yarn remove:*)"
     ],
     "deny": []
   }

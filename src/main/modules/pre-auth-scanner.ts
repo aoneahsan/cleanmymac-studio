@@ -302,6 +302,7 @@ export class PreAuthScanner {
     const categoryDef = Object.values(SCAN_CATEGORIES).find(cat => cat.id === id);
     return {
       id,
+      type: categoryDef?.type || 'junk',
       name: categoryDef?.name || id,
       description: categoryDef?.description || '',
       size: 0,
