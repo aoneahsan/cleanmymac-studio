@@ -1,0 +1,40 @@
+{
+  "name": "cleanmymac-pro",
+  "version": "1.0.0",
+  "description": "CleanMyMac Pro+ - The Free Mac Cleaner",
+  "main": "dist-electron/main/index.js",
+  "author": "Ahsan Mahmood <aoneahsan@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && electron-builder",
+    "preview": "vite preview",
+    "electron": "electron .",
+    "electron:dev": "concurrently \"yarn dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "dist": "yarn build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc --noEmit"
+  },
+  "build": {
+    "appId": "com.cleanmymacpro.app",
+    "productName": "CleanMyMac Pro+",
+    "directories": {
+      "output": "release/${version}"
+    },
+    "files": [
+      "dist-electron",
+      "dist"
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    }
+  }
+}
