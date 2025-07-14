@@ -35,23 +35,12 @@ const dashboardRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/dashboard',
   component: Dashboard,
-  beforeLoad: async ({ context }) => {
-    // Check if user is authenticated
-    if (!context.auth.user) {
-      throw new Error('Not authenticated');
-    }
-  },
 });
 
 const settingsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/settings',
   component: Settings,
-  beforeLoad: async ({ context }) => {
-    if (!context.auth.user) {
-      throw new Error('Not authenticated');
-    }
-  },
 });
 
 // Create the route tree
@@ -66,9 +55,6 @@ const routeTree = rootRoute.addChildren([
 // Create the router
 export const router = createRouter({ 
   routeTree,
-  context: {
-    auth: undefined!,
-  },
 });
 
 // Register router types

@@ -10,7 +10,7 @@ export function ScanResults() {
   // Redirect to home if no scan results
   React.useEffect(() => {
     if (!scanResults) {
-      navigate({ to: '/' });
+      void navigate({ to: '/' });
     }
   }, [scanResults, navigate]);
 

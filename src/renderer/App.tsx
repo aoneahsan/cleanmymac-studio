@@ -8,17 +8,11 @@ function App() {
 
   useEffect(() => {
     // Initialize Firebase Auth listener
-    const unsubscribe = initializeAuth();
-    return () => unsubscribe();
+    initializeAuth();
   }, []);
 
   return (
-    <RouterProvider 
-      router={router} 
-      context={{
-        auth: useAuthStore.getState(),
-      }}
-    />
+    <RouterProvider router={router} />
   );
 }
 

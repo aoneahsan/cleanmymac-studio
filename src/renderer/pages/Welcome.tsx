@@ -6,7 +6,7 @@ export function Welcome() {
   const navigate = useNavigate();
 
   const handleStartScan = () => {
-    navigate({ to: '/scanning' });
+    void navigate({ to: '/scanning' });
   };
 
   return (

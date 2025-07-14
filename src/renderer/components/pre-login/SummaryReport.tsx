@@ -18,6 +18,7 @@ import {
 import type { ScanSummary } from '@shared/types/scan';
 import { SCAN_CATEGORIES } from '@shared/constants/categories';
 import { formatBytes } from '@renderer/lib/utils';
+import { AuthModal } from '@renderer/components/auth/AuthModal';
 
 interface SummaryReportProps {
   scanResults: ScanSummary;
@@ -25,6 +26,7 @@ interface SummaryReportProps {
 
 export function SummaryReport({ scanResults }: SummaryReportProps) {
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
   const getCategoryIcon = (categoryId: string) => {
     const icons: Record<string, any> = {
@@ -135,7 +137,10 @@ export function SummaryReport({ scanResults }: SummaryReportProps) {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg" 
-                onClick={() => setShowAuthModal(true)}
+                onClick={() => {
+                  setAuthMode('login');
+                  setShowAuthModal(true);
+                }}
                 className="min-w-[200px]"
               >
                 Login to Clean
@@ -145,7 +150,10 @@ export function SummaryReport({ scanResults }: SummaryReportProps) {
               <Button 
                 size="lg" 
                 variant="outline"
-                onClick={() => setShowAuthModal(true)}
+                onClick={() => {
+                  setAuthMode('signup');
+                  setShowAuthModal(true);
+                }}
                 className="min-w-[200px]"
               >
                 Create Free Account
@@ -218,6 +226,13 @@ export function SummaryReport({ scanResults }: SummaryReportProps) {
           </CardContent>
         </Card>
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        defaultMode={authMode}
+      />
     </div>
   );
 }

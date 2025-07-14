@@ -16,7 +16,7 @@ export function Scanning() {
     // Navigate to results when scan completes
     if (!isScanning && scanResults) {
       setTimeout(() => {
-        navigate({ to: '/scan-results' });
+        void navigate({ to: '/scan-results' });
       }, 500); // Small delay for better UX
     }
   }, [isScanning, scanResults, navigate]);

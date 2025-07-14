@@ -117,7 +117,8 @@
       "Bash(./node_modules/.bin/tsc:*)",
       "Bash(yarn fix-lint-errors:*)",
       "Bash(cat:*)",
-      "Bash(yarn init:*)"
+      "Bash(yarn init:*)",
+      "Bash(yarn typecheck)"
     ],
     "deny": []
   }

@@ -1,4 +1,6 @@
-export const PLAN_LIMITS = {
+import type { PlanLimits } from '../types/user';
+
+export const PLAN_LIMITS: Record<string, PlanLimits> = {
   free: {
     dailyScans: 1,
     cleanupSizeMB: 500,
@@ -23,7 +25,7 @@ export const PLAN_LIMITS = {
     automation: true,
     prioritySupport: false,
   },
-} as const;
+};
 
 export const FREE_FEATURES = [
   'smart_scan_basic',
