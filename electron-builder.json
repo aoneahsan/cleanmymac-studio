@@ -1,0 +1,23 @@
+{
+  "appId": "com.cleanmymacpro.app",
+  "productName": "CleanMyMac Pro+",
+  "directories": {
+    "output": "release/${version}"
+  },
+  "files": [
+    "dist-electron",
+    "dist"
+  ],
+  "mac": {
+    "category": "public.app-category.utilities",
+    "icon": "build/icon.icns",
+    "hardenedRuntime": true,
+    "gatekeeperAssess": false,
+    "entitlements": "build/entitlements.mac.plist",
+    "entitlementsInherit": "build/entitlements.mac.plist",
+    "target": [
+      "dmg",
+      "zip"
+    ]
+  }
+}

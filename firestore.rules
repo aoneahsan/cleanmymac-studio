@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read and write their own data
+    match /cmp_users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Licenses can only be read by authenticated users
+    match /cmp_licenses/{licenseId} {
+      allow read: if request.auth != null;
+      allow write: if false; // Only via Functions
+    }
+    
+    // Users can read and write their own scans
+    match /cmp_scans/{scanId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.userId;
+    }
+    
+    // Pro requests can be created by authenticated users
+    match /cmp_pro_requests/{requestId} {
+      allow read: if request.auth != null && 
+        (request.auth.uid == resource.data.userId || 
+         request.auth.token.admin == true);
+      allow create: if request.auth != null;
+      allow update: if request.auth != null && 
+        request.auth.token.admin == true;
+    }
+    
+    // Analytics can be written by authenticated users
+    match /cmp_analytics/{analyticsId} {
+      allow write: if request.auth != null;
+      allow read: if request.auth != null && 
+        request.auth.token.admin == true;
+    }
+    
+    // Upgrade logs are admin only
+    match /cmp_upgrade_logs/{logId} {
+      allow read, write: if request.auth != null && 
+        request.auth.token.admin == true;
+    }
+  }
+}

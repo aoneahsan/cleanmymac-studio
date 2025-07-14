@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "module": "commonjs",
+    "outDir": "dist-electron",
+    "paths": {
+      "@shared/*": ["./src/shared/*"]
+    }
+  },
+  "include": ["electron/**/*", "src/main/**/*", "src/shared/**/*"],
+  "exclude": ["node_modules", "dist", "dist-electron", "release", "src/renderer"]
+}

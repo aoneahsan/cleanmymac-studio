@@ -2,7 +2,7 @@
   "name": "cleanmymac-pro",
   "version": "1.0.0",
   "description": "CleanMyMac Pro+ - The Free Mac Cleaner",
-  "main": "dist-electron/main/index.js",
+  "main": "dist-electron/main.js",
   "author": "Ahsan Mahmood <aoneahsan@gmail.com>",
   "license": "MIT",
   "private": true,
@@ -11,10 +11,11 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && electron-builder",
+    "build": "node scripts/build-electron.js && vite build && electron-builder",
     "preview": "vite preview",
-    "electron": "electron .",
-    "electron:dev": "concurrently \"yarn dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron": "node scripts/build-electron.js && electron ./dist-electron/main.js",
+    "electron:dev": "concurrently -k \"yarn dev\" \"wait-on tcp:5173 && yarn electron:watch\"",
+    "electron:watch": "node scripts/build-electron.js && NODE_ENV=development electron ./dist-electron/main.js",
     "dist": "yarn build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit"
@@ -36,5 +37,36 @@
         "zip"
       ]
     }
+  },
+  "dependencies": {
+    "@capacitor/preferences": "^7.0.1",
+    "@tanstack/react-query": "^5.83.0",
+    "@tanstack/react-router": "^1.127.3",
+    "axios": "^1.10.0",
+    "capacitor-firebase-kit": "^0.0.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "firebase": "^11.10.0",
+    "lucide-react": "^0.525.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwind-merge": "^3.3.1",
+    "zustand": "^5.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.13",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^9.2.0",
+    "electron": "^37.2.1",
+    "electron-builder": "^26.0.12",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.4",
+    "wait-on": "^8.0.3"
   }
 }
