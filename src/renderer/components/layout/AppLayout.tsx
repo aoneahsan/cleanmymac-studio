@@ -11,12 +11,16 @@ import { useNavigate } from '@tanstack/react-router';
 import { t } from '@renderer/lib/i18n-simple';
 import { AnimatedBackground } from '@renderer/components/ui/AnimatedBackground';
 import { Footer } from './Footer';
+import { useGlobalKeyboardShortcuts } from '@renderer/hooks/useKeyboardShortcuts';
 
 export function AppLayout() {
   const { insets, titlebarHeight, isElectron } = useSafeArea();
   const { user, logout, isProUser } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Initialize global keyboard shortcuts
+  useGlobalKeyboardShortcuts();
 
   const menuItems = [
     {
