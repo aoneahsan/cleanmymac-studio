@@ -125,7 +125,8 @@
       "Bash(yarn remove:*)",
       "Bash(yarn electron:dev:*)",
       "Bash(yarn run:*)",
-      "Bash(yarn:*)"
+      "Bash(yarn:*)",
+      "Bash(jq:*)"
     ],
     "deny": []
   }

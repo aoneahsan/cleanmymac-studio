@@ -1,6 +1,9 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 import { registerScannerHandlers } from '../src/main/ipc/scanner';
+import { registerDiskHealthHandlers } from '../src/main/ipc/diskHealth';
+import { registerAppUninstallerHandlers } from '../src/main/ipc/appUninstaller';
+import { registerPrivacyCleanerHandlers } from '../src/main/ipc/privacyCleaner';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -55,3 +58,6 @@ app.on('activate', () => {
 
 // Register IPC handlers
 registerScannerHandlers();
+registerDiskHealthHandlers();
+registerAppUninstallerHandlers();
+registerPrivacyCleanerHandlers();
