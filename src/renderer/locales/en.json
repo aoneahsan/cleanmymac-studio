@@ -274,5 +274,60 @@
     "selectAtLeastOne": "Please select at least one data type to export",
     "success": "Report exported successfully",
     "error": "Failed to export report"
+  },
+  "dragDrop": {
+    "title": "Drag & Drop File Analysis",
+    "dropNow": "Drop files here!",
+    "description": "Drop files or folders here to analyze what can be safely deleted",
+    "selectFiles": "Select Files",
+    "analysisResults": "Analysis Results",
+    "analyzing": "Analyzing Files...",
+    "analyzingFiles": "Analyzing {{count}} files...",
+    "analysisComplete": "Found {{count}} files that can be deleted ({{size}})",
+    "totalFiles": "Total Files",
+    "canBeDeleted": "Can Be Deleted",
+    "potentialSpace": "Potential Space",
+    "fileName": "File Name",
+    "category": "Category",
+    "size": "Size",
+    "safe": "Safe to Delete",
+    "reason": "Reason",
+    "disclaimer": "This is a recommendation based on file type and location. Always review files before deleting them."
+  },
+  "tips": {
+    "quickTip": "Quick Tip",
+    "dailyTips": "Daily Tips",
+    "emptyTrashRegularly": {
+      "title": "Empty Trash Regularly",
+      "description": "Files in your Trash still take up disk space. Empty it weekly to free up storage."
+    },
+    "clearBrowserCache": {
+      "title": "Clear Browser Cache",
+      "description": "Browser caches can grow large over time. Clear them monthly for better performance."
+    },
+    "updateApps": {
+      "title": "Keep Apps Updated",
+      "description": "Updated apps run faster and more securely. Check for updates weekly."
+    },
+    "organizeDesktop": {
+      "title": "Organize Your Desktop",
+      "description": "A cluttered desktop can slow down your Mac. Keep it clean and organized."
+    },
+    "useCloudStorage": {
+      "title": "Use Cloud Storage",
+      "description": "Move large files to iCloud or other cloud services to save local space."
+    },
+    "removeStartupItems": {
+      "title": "Manage Startup Items",
+      "description": "Too many startup items slow boot time. Remove unnecessary ones in System Settings."
+    },
+    "enableFirewall": {
+      "title": "Enable Firewall",
+      "description": "Turn on your Mac's built-in firewall for better security against threats."
+    },
+    "archiveOldFiles": {
+      "title": "Archive Old Files",
+      "description": "Compress old files you rarely use to save space while keeping them accessible."
+    }
   }
 }

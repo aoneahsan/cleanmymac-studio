@@ -2,9 +2,17 @@ import OneSignal from 'react-onesignal';
 import { toast } from 'react-toastify';
 import { t } from './i18n-simple';
 
+// Track initialization state
+let isOneSignalInitialized = false;
+
 // OneSignal configuration
 export const initializeOneSignal = async () => {
   try {
+    // Prevent duplicate initialization
+    if (isOneSignalInitialized) {
+      return;
+    }
+
     // Skip OneSignal in Electron environment
     if (window.electron) {
       console.log('OneSignal skipped in Electron environment');
@@ -24,6 +32,9 @@ export const initializeOneSignal = async () => {
         enable: false,
       },
     });
+
+    // Mark as initialized
+    isOneSignalInitialized = true;
 
     // Request permission for notifications
     const permission = await OneSignal.Notifications.requestPermission();
@@ -87,6 +98,23 @@ export const sendLocalNotification = (type: NotificationType, title: string, bod
       break;
     default:
       toast.info(body);
+  }
+};
+
+// Simple notification helper for general use
+export const showNotification = (type: 'success' | 'error' | 'info' | 'warning', message: string) => {
+  switch (type) {
+    case 'success':
+      toast.success(message);
+      break;
+    case 'error':
+      toast.error(message);
+      break;
+    case 'warning':
+      toast.warning(message);
+      break;
+    default:
+      toast.info(message);
   }
 };
 

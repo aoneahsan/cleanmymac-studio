@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
@@ -30,7 +30,7 @@ interface CategoryCardProps {
   onViewDetails: () => void;
 }
 
-function CategoryCard({ category, isLocked, isSelected, onToggle, onViewDetails }: CategoryCardProps) {
+const CategoryCard = React.memo(({ category, isLocked, isSelected, onToggle, onViewDetails }: CategoryCardProps) => {
   const Icon = ({
     cache: Trash2,
     logs: FileText,
@@ -93,7 +93,9 @@ function CategoryCard({ category, isLocked, isSelected, onToggle, onViewDetails 
       </motion.div>
     </FeatureLock>
   );
-}
+});
+
+CategoryCard.displayName = 'CategoryCard';
 
 export function SmartScan() {
   const navigate = useNavigate();
@@ -165,8 +167,7 @@ export function SmartScan() {
   // Progressive cleanup action
   const cleanupAction = useProgressiveAction(
     async () => {
-      const selectedSize = getTotalSelectedSize();
-      const cleanupCheck = await checkCleanupLimit(selectedSize);
+      const cleanupCheck = await checkCleanupLimit(totalSelectedSize);
       
       if (!cleanupCheck.allowed) {
         throw new Error(formatLimitMessage(cleanupCheck, 'cleanup'));
@@ -230,13 +231,13 @@ export function SmartScan() {
     }
   };
 
-  const getTotalSelectedSize = () => {
+  const totalSelectedSize = useMemo(() => {
     if (!scanResults) return 0;
     
     return scanResults.categories
       .filter((cat: ScanCategory) => selectedCategories.has(cat.type))
       .reduce((acc: number, cat: ScanCategory) => acc + cat.size, 0);
-  };
+  }, [scanResults, selectedCategories]);
 
   const handleCategoryToggle = (categoryType: string) => {
     const newSelected = new Set(selectedCategories);
@@ -248,14 +249,12 @@ export function SmartScan() {
     setSelectedCategories(newSelected);
   };
 
-  const getLockedCategories = () => {
-    if (isProUser) return new Set<string>();
+  const lockedCategories = useMemo(() => {
+    if (isProUser()) return new Set<string>();
     
     // Free users can only clean cache and trash
     return new Set(['logs', 'downloads', 'applications']);
-  };
-
-  const lockedCategories = getLockedCategories();
+  }, [isProUser]);
 
   if (isCheckingLimits) {
     return (

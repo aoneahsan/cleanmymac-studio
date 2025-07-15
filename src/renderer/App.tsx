@@ -29,8 +29,8 @@ function App() {
     // Initialize Firebase Auth listener
     initializeAuth();
     
-    // Initialize OneSignal
-    initializeOneSignal();
+    // Initialize OneSignal with error handling
+    initializeOneSignal().catch(console.error);
   }, []);
 
   useEffect(() => {

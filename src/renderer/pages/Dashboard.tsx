@@ -15,6 +15,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { LoadingSkeleton } from '@renderer/components/ui/LoadingSkeleton';
 import { OnboardingTour } from '@renderer/components/onboarding/OnboardingTour';
 import { SystemMonitor } from '@renderer/components/widgets/SystemMonitor';
+import { QuickTips } from '@renderer/components/widgets/QuickTips';
+import { DragDropAnalyzer } from '@renderer/components/features/DragDropAnalyzer';
 import { formatBytes } from '@renderer/lib/utils';
 import { t } from '@renderer/lib/i18n-simple';
 
@@ -39,6 +41,7 @@ export function Dashboard() {
   const { checkScanLimit, checkCleanupLimit } = usePlanLimits();
   const [usage, setUsage] = useState<{ scan: any; cleanup: any } | null>(null);
   const [showMonitor, setShowMonitor] = useState(true);
+  const [showTips, setShowTips] = useState(true);
 
   useEffect(() => {
     loadUsage();
@@ -64,6 +67,7 @@ export function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/20 to-pink-50/20 dark:from-gray-900 dark:via-purple-900/10 dark:to-pink-900/10">
       <OnboardingTour />
       {showMonitor && <SystemMonitor onClose={() => setShowMonitor(false)} />}
+      {showTips && <QuickTips onClose={() => setShowTips(false)} />}
       <AnimatePresence mode="wait">
         <motion.div
           initial={{ opacity: 0 }}
@@ -284,6 +288,15 @@ export function Dashboard() {
                 </motion.div>
               </div>
             </Card>
+          </motion.div>
+
+          {/* Drag & Drop File Analyzer */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <DragDropAnalyzer />
           </motion.div>
         </motion.div>
       </AnimatePresence>
