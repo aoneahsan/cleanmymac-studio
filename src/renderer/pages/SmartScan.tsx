@@ -19,6 +19,7 @@ import { Zap, Trash2, FileText, Download, Package, AlertCircle, Crown } from 'lu
 import { formatBytes } from '@renderer/lib/utils';
 import { t } from '@renderer/lib/i18n-simple';
 import { notifyScanStarted, notifyScanComplete, notifyCleanStarted, notifyCleanComplete } from '@renderer/lib/notifications';
+import { useSoundEffect } from '@renderer/lib/soundEffects';
 import type { ScanCategory, ScanItem } from '@shared/types/scan';
 
 interface CategoryCardProps {
@@ -99,6 +100,7 @@ export function SmartScan() {
   const { scanResults, isScanning, startScan } = useScanStore();
   const { addScanResult, addCleanupResult } = useHistoryStore();
   const { checkScanLimit, checkCleanupLimit, isProUser, formatLimitMessage } = usePlanLimits();
+  const { playSound } = useSoundEffect();
   
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
   const [scanLimit, setScanLimit] = useState<any>(null);
@@ -115,12 +117,14 @@ export function SmartScan() {
       }
       
       notifyScanStarted();
+      playSound('scanStart');
       const startTime = Date.now();
       
       await startScan((progress) => {
         setScanProgress(progress);
         if (progress % 20 === 0) {
           // Update notification every 20%
+          playSound('scanProgress');
           window.electron?.showNotification({
             title: t('app.name'),
             body: t('notifications.scanProgress', { progress }),
@@ -147,12 +151,14 @@ export function SmartScan() {
         });
         
         notifyScanComplete(formatBytes(scanResults.totalSpace));
+        playSound('scanComplete');
       }
     },
     {
       simulateProgress: true,
       successMessage: t('scan.complete'),
       errorMessage: t('common.error'),
+      onError: () => playSound('error'),
     }
   );
 
@@ -167,6 +173,7 @@ export function SmartScan() {
       }
       
       notifyCleanStarted();
+      playSound('cleanStart');
       const startTime = Date.now();
       
       // Simulate cleanup process
@@ -191,6 +198,7 @@ export function SmartScan() {
       });
       
       notifyCleanComplete(formatBytes(selectedSize));
+      playSound('cleanComplete');
       
       // Reset after cleanup
       setSelectedCategories(new Set());
@@ -199,6 +207,7 @@ export function SmartScan() {
       simulateProgress: true,
       successMessage: t('scan.cleanComplete'),
       errorMessage: t('common.error'),
+      onError: () => playSound('error'),
     }
   );
 

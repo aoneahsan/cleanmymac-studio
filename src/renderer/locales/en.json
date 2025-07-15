@@ -85,6 +85,7 @@
   },
   "settings": {
     "title": "Settings",
+    "description": "Customize your CleanMyMac Pro+ experience",
     "general": "General",
     "language": "Language",
     "theme": "Theme",
@@ -96,7 +97,36 @@
     "version": "Version",
     "checkUpdates": "Check for updates",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "appearance": "Appearance",
+    "selectTheme": "Select theme",
+    "colors": "Colors",
+    "primaryColor": "Primary Color",
+    "accentColor": "Accent Color",
+    "animations": "Animations",
+    "enableParticles": "Enable Background Particles",
+    "animationSpeed": "Animation Speed",
+    "selectLanguage": "Select Language",
+    "notifications": "Notifications",
+    "notificationPreferences": "Notification Preferences",
+    "scanNotifications": "Scan Progress Notifications",
+    "scanNotificationsDesc": "Get notified about scan progress and completion",
+    "promotionalNotifications": "Promotional Notifications",
+    "promotionalNotificationsDesc": "Receive updates about new features and offers",
+    "privacySettings": "Privacy Settings",
+    "dataCollection": "Data Collection",
+    "dataCollectionDesc": "We collect minimal data to improve your experience",
+    "manageData": "Manage Data",
+    "exportData": "Export Your Data",
+    "exportDataDesc": "Download all your data in JSON format",
+    "exportNow": "Export Now",
+    "shortcuts": "Shortcuts",
+    "keyboardShortcuts": "Keyboard Shortcuts",
+    "memberSince": "Member since {{date}}",
+    "soundEffects": "Sound Effects",
+    "enableSounds": "Enable Sound Effects",
+    "volume": "Volume",
+    "testSound": "Test Sound"
   },
   "common": {
     "loading": "Loading...",
@@ -175,5 +205,74 @@
     "duration": "Duration",
     "status": "Status",
     "never": "Never"
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Welcome to CleanMyMac Pro+!",
+      "description": "Hi {{name}}! Let me show you around your new Mac cleaning companion."
+    },
+    "smartScan": {
+      "title": "Smart Scan - Your Starting Point",
+      "description": "This is where the magic begins! Smart Scan analyzes your entire system to find junk files, optimize performance, and keep your Mac healthy."
+    },
+    "stats": {
+      "title": "Your Cleaning Stats",
+      "description": "Track your progress here. See how much space you've freed, when you last scanned, and monitor your system health at a glance."
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "description": "Access all cleaning modules from here. Free users can use Smart Scan, while Pro users unlock all advanced features."
+    },
+    "history": {
+      "title": "Cleaning History",
+      "description": "View detailed reports of all your scans and cleanups. Track your usage patterns and see how CleanMyMac Pro+ has helped over time."
+    },
+    "upgrade": {
+      "title": "Unlock Pro Features",
+      "description": "Get unlimited scans, access to all cleaning modules, and priority support. Click here anytime to upgrade!"
+    }
+  },
+  "monitor": {
+    "title": "System Monitor",
+    "cpu": "CPU",
+    "memory": "Memory",
+    "disk": "Disk",
+    "network": "Network",
+    "optimize": "Optimize",
+    "details": "Details"
+  },
+  "shortcuts": {
+    "smartScan": "Smart Scan",
+    "viewHistory": "View History",
+    "openSettings": "Open Settings",
+    "quit": "Quit Application",
+    "refresh": "Refresh Page",
+    "dashboard": "Go to Dashboard",
+    "focusSearch": "Focus Search",
+    "closeModal": "Close Modal/Dialog",
+    "navigatingToSmartScan": "Navigating to Smart Scan...",
+    "navigatingToHistory": "Navigating to History...",
+    "navigatingToSettings": "Navigating to Settings...",
+    "navigatingToDashboard": "Navigating to Dashboard...",
+    "loggingOut": "Logging out...",
+    "searchFocused": "Search focused"
+  },
+  "export": {
+    "title": "Export Report",
+    "export": "Export",
+    "selectFormat": "Select Export Format",
+    "dateRange": "Date Range (Optional)",
+    "selectDateRange": "Select date range",
+    "dateRangeHint": "Leave empty to export all data",
+    "includeData": "Include in Report",
+    "includeSummary": "Summary Statistics",
+    "includeSummaryDesc": "Total space freed, scan counts, and streaks",
+    "includeScans": "Scan History",
+    "includeScansDesc": "Detailed list of all system scans",
+    "includeCleanups": "Cleanup History",
+    "includeCleanupsDesc": "Detailed list of all cleanup operations",
+    "selectAtLeastOne": "Please select at least one data type to export",
+    "success": "Report exported successfully",
+    "error": "Failed to export report"
   }
 }

@@ -9,6 +9,7 @@ import { Badge } from 'primereact/badge';
 import { useAuthStore } from '@renderer/stores/authStore';
 import { useNavigate } from '@tanstack/react-router';
 import { t } from '@renderer/lib/i18n-simple';
+import { AnimatedBackground } from '@renderer/components/ui/AnimatedBackground';
 
 export function AppLayout() {
   const { insets, titlebarHeight, isElectron } = useSafeArea();
@@ -31,6 +32,7 @@ export function AppLayout() {
       label: t('common.history'),
       icon: 'pi pi-history',
       command: () => navigate({ to: '/history' }),
+      className: 'menuitem-history',
     },
     {
       label: t('settings.title'),
@@ -48,6 +50,7 @@ export function AppLayout() {
           severity="warning"
           size="small"
           onClick={() => navigate({ to: '/upgrade' })}
+          data-tour="upgrade"
         />
       )}
       <div className="flex items-center gap-2">
@@ -76,7 +79,9 @@ export function AppLayout() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
+      <AnimatedBackground />
+      
       {/* Safe area for titlebar on macOS */}
       {isElectron && (
         <div 
@@ -101,6 +106,9 @@ export function AppLayout() {
             model={menuItems} 
             end={end}
             className="border-0 bg-transparent px-4"
+            pt={{
+              menuitem: { 'data-tour': (item: any) => item.label === t('common.history') ? 'history' : undefined }
+            }}
           />
         </div>
       </div>

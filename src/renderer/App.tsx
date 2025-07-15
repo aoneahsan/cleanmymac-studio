@@ -6,6 +6,7 @@ import { SafeAreaProvider } from './contexts/SafeAreaContext';
 import { ToastContainer } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initializeOneSignal } from './lib/notifications';
+import { useGlobalKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -20,6 +21,9 @@ const queryClient = new QueryClient({
 
 function App() {
   const { initializeAuth, user } = useAuthStore();
+  
+  // Initialize global keyboard shortcuts
+  useGlobalKeyboardShortcuts();
 
   useEffect(() => {
     // Initialize Firebase Auth listener

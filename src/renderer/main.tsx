@@ -11,6 +11,7 @@ import { PrimeReactProvider } from 'primereact/api';
 
 // Custom styles
 import './styles/primereact-overrides.css';
+import './styles/onboarding.css';
 
 // React Toastify
 import { ToastContainer } from 'react-toastify';

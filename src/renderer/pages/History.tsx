@@ -13,7 +13,9 @@ import { useHistoryStore } from '@renderer/stores/historyStore';
 import { useAuthStore } from '@renderer/stores/authStore';
 import { formatBytes } from '@renderer/lib/utils';
 import { t } from '@renderer/lib/i18n-simple';
-import { BarChart3, TrendingUp, Clock, Award } from 'lucide-react';
+import { BarChart3, TrendingUp, Clock, Award, Download } from 'lucide-react';
+import { ExportDialog } from '@renderer/components/reports/ExportDialog';
+import { useSoundEffect } from '@renderer/lib/soundEffects';
 import type { ScanResult, CleanupResult, UserStats } from '@renderer/stores/historyStore';
 
 export function History() {
@@ -30,6 +32,8 @@ export function History() {
   
   const [monthlyData, setMonthlyData] = useState<{ month: string; cleaned: number }[]>([]);
   const [activeTab, setActiveTab] = useState(0);
+  const [showExportDialog, setShowExportDialog] = useState(false);
+  const { playSound } = useSoundEffect();
 
   useEffect(() => {
     if (user) {
@@ -150,12 +154,24 @@ export function History() {
               {t('history.description')}
             </p>
           </div>
-          <Button 
-            label={t('common.back')} 
-            icon="pi pi-arrow-left"
-            severity="secondary"
-            onClick={() => navigate({ to: '/dashboard' })}
-          />
+          <div className="flex gap-2">
+            <Button 
+              label={t('export.title')} 
+              icon="pi pi-download"
+              severity="info"
+              outlined
+              onClick={() => {
+                playSound('click');
+                setShowExportDialog(true);
+              }}
+            />
+            <Button 
+              label={t('common.back')} 
+              icon="pi pi-arrow-left"
+              severity="secondary"
+              onClick={() => navigate({ to: '/dashboard' })}
+            />
+          </div>
         </div>
 
         {/* Stats Overview */}
@@ -329,6 +345,12 @@ export function History() {
           </TabPanel>
         </TabView>
       </motion.div>
+
+      {/* Export Dialog */}
+      <ExportDialog
+        visible={showExportDialog}
+        onHide={() => setShowExportDialog(false)}
+      />
     </div>
   );
 }

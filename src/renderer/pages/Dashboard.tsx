@@ -6,12 +6,15 @@ import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 import { ProgressBar } from 'primereact/progressbar';
+import { SoundButton } from '@renderer/components/ui/SoundButton';
 import { UpgradePrompt } from '@renderer/components/upgrade/UpgradePrompt';
 import { LimitIndicator } from '@renderer/components/features/LimitIndicator';
 import { FeatureLock } from '@renderer/components/features/FeatureLock';
 import { HardDrive, Zap, Shield, Activity, TrendingUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LoadingSkeleton } from '@renderer/components/ui/LoadingSkeleton';
+import { OnboardingTour } from '@renderer/components/onboarding/OnboardingTour';
+import { SystemMonitor } from '@renderer/components/widgets/SystemMonitor';
 import { formatBytes } from '@renderer/lib/utils';
 import { t } from '@renderer/lib/i18n-simple';
 
@@ -35,6 +38,7 @@ export function Dashboard() {
   const navigate = useNavigate();
   const { checkScanLimit, checkCleanupLimit } = usePlanLimits();
   const [usage, setUsage] = useState<{ scan: any; cleanup: any } | null>(null);
+  const [showMonitor, setShowMonitor] = useState(true);
 
   useEffect(() => {
     loadUsage();
@@ -58,6 +62,8 @@ export function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/20 to-pink-50/20 dark:from-gray-900 dark:via-purple-900/10 dark:to-pink-900/10">
+      <OnboardingTour />
+      {showMonitor && <SystemMonitor onClose={() => setShowMonitor(false)} />}
       <AnimatePresence mode="wait">
         <motion.div
           initial={{ opacity: 0 }}
@@ -71,7 +77,7 @@ export function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center justify-between mb-8"
           >
-            <div>
+            <div className="onboarding-welcome">
               <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
                 {t('dashboard.title')}
               </h1>
@@ -105,6 +111,7 @@ export function Dashboard() {
             initial="hidden"
             animate="show"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            data-tour="stats"
           >
             <motion.div variants={item} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Card className="hover-lift glass overflow-hidden group">
@@ -213,7 +220,7 @@ export function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <Card className="shadow-2xl glass overflow-hidden">
+            <Card className="shadow-2xl glass overflow-hidden" data-tour="quick-actions">
               <div className="p-8">
                 <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent mb-6">
                   {t('dashboard.quickActions')}
@@ -224,8 +231,8 @@ export function Dashboard() {
                   animate="show"
                   className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
                 >
-                  <motion.div variants={item}>
-                    <Button 
+                  <motion.div variants={item} data-tour="smart-scan">
+                    <SoundButton 
                       className="w-full h-32 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-purple-500 to-pink-500 border-0 text-white hover:from-purple-600 hover:to-pink-600 hover:scale-105 transition-all duration-300"
                       onClick={() => navigate({ to: '/smart-scan' })}
                     >
@@ -236,7 +243,7 @@ export function Dashboard() {
                         <Zap className="w-10 h-10" />
                       </motion.div>
                       <span className="text-lg font-medium">{t('dashboard.smartScan')}</span>
-                    </Button>
+                    </SoundButton>
                   </motion.div>
 
                   <motion.div variants={item}>
