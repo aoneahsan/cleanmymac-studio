@@ -859,5 +859,36 @@
     "noTestYet": "Run a speed test to see your network performance",
     "mbps": "Mbps",
     "ms": "ms"
+  },
+  "battery": {
+    "title": "Battery Health Monitor",
+    "loading": "Loading Battery Information...",
+    "analyzing": "Analyzing your battery health",
+    "charging": "Charging",
+    "discharging": "On Battery Power",
+    "level": "Battery Level",
+    "health": "Health",
+    "cycles": "Cycle Count",
+    "temperature": "Temperature",
+    "voltage": "Voltage",
+    "good": "Good",
+    "fair": "Fair",
+    "replace": "Service Recommended",
+    "timeToFull": "{{time}} until full",
+    "timeRemaining": "{{time}} remaining",
+    "healthHistory": "Health History",
+    "details": "Battery Details",
+    "manufacturer": "Manufacturer",
+    "serialNumber": "Serial Number",
+    "designCapacity": "Design Capacity",
+    "currentCapacity": "Current Capacity",
+    "tips": {
+      "title": "Battery Tips",
+      "tip1": "Keep your Mac plugged in when possible",
+      "tip2": "Avoid extreme temperatures",
+      "tip3": "Update to the latest macOS for battery optimizations",
+      "tip4": "Reduce screen brightness to extend battery life"
+    },
+    "calibrate": "Calibrate Battery"
   }
 }

@@ -15,6 +15,8 @@ export const COLLECTIONS = {
   USERS: 'cmp_users',
   LICENSES: 'cmp_licenses',
   SCANS: 'cmp_scans',
+  CLEANUPS: 'cmp_cleanups',
+  USER_STATS: 'cmp_user_stats',
   ANALYTICS: 'cmp_analytics',
   PRO_REQUESTS: 'cmp_pro_requests',
   UPGRADE_LOGS: 'cmp_upgrade_logs'

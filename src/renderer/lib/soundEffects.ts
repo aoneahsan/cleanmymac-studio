@@ -15,7 +15,8 @@ export type SoundEffectType =
   | 'cleanComplete'
   | 'notification'
   | 'unlock'
-  | 'transition';
+  | 'transition'
+  | 'delete';
 
 interface SoundSettings {
   enabled: boolean;
@@ -150,6 +151,12 @@ function generateSound(type: SoundEffectType): OscillatorNode | null {
       oscillator.frequency.setValueAtTime(440, currentTime);
       oscillator.frequency.exponentialRampToValueAtTime(550, currentTime + 0.05);
       gainNode.gain.exponentialRampToValueAtTime(0.01, currentTime + 0.1);
+      break;
+      
+    case 'delete':
+      oscillator.frequency.setValueAtTime(440, currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(110, currentTime + 0.2);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, currentTime + 0.25);
       break;
       
     default:

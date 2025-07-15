@@ -55,7 +55,7 @@ export function useKeyboardShortcuts() {
       metaKey: isMac,
       ctrlKey: !isMac,
       action: () => {
-        if (window.electron) {
+        if (window.electron?.quit) {
           window.electron.quit();
         } else {
           // For web version, logout

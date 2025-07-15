@@ -7,6 +7,7 @@ import { Settings } from './pages/Settings';
 import { SmartScan } from './pages/SmartScan';
 import { History } from './pages/History';
 import { Tools } from './pages/Tools';
+import { Upgrade } from './pages/Upgrade';
 import { AppLayout } from './components/layout/AppLayout';
 
 // Create root route
@@ -64,6 +65,12 @@ const toolsRoute = createRoute({
   component: Tools,
 });
 
+const upgradeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/upgrade',
+  component: Upgrade,
+});
+
 // Create the route tree
 const routeTree = rootRoute.addChildren([
   welcomeRoute,
@@ -74,6 +81,7 @@ const routeTree = rootRoute.addChildren([
   smartScanRoute,
   historyRoute,
   toolsRoute,
+  upgradeRoute,
 ]);
 
 // Create the router

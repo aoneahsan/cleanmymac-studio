@@ -11,6 +11,9 @@ export interface IElectronAPI {
     invoke: (channel: string, ...args: any[]) => Promise<any>;
     on: (channel: string, listener: (data: any) => void) => () => void;
   };
+  quit?: () => void;
+  showNotification?: (title: string, body: string, options?: any) => void;
+  setNotificationPreference?: (enabled: boolean) => void;
 }
 
 declare global {

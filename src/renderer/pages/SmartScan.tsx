@@ -123,14 +123,14 @@ export function SmartScan() {
       const startTime = Date.now();
       
       await startScan((progress) => {
-        setScanProgress(progress);
-        if (progress % 20 === 0) {
+        setScanProgress(progress.percentage || 0);
+        if ((progress.percentage || 0) % 20 === 0) {
           // Update notification every 20%
           playSound('scanProgress');
-          window.electron?.showNotification({
-            title: t('app.name'),
-            body: t('notifications.scanProgress', { progress }),
-          });
+          window.electron?.showNotification?.(
+            t('app.name'),
+            t('notifications.scanProgress', { progress: progress.percentage || 0 })
+          );
         }
       });
       
@@ -187,7 +187,7 @@ export function SmartScan() {
       await addCleanupResult({
         scanId,
         timestamp: new Date(),
-        totalCleaned: selectedSize,
+        totalCleaned: totalSelectedSize,
         itemsCleaned: {
           systemJunk: scanResults?.categories.find(c => c.type === 'logs' && selectedCategories.has(c.type))?.size || 0,
           applicationCaches: scanResults?.categories.find(c => c.type === 'cache' && selectedCategories.has(c.type))?.size || 0,
@@ -198,7 +198,7 @@ export function SmartScan() {
         status: 'completed',
       });
       
-      notifyCleanComplete(formatBytes(selectedSize));
+      notifyCleanComplete(formatBytes(totalSelectedSize));
       playSound('cleanComplete');
       
       // Reset after cleanup
@@ -223,7 +223,7 @@ export function SmartScan() {
       setScanLimit(scan);
       
       if (scanResults) {
-        const cleanup = await checkCleanupLimit(getTotalSelectedSize());
+        const cleanup = await checkCleanupLimit(totalSelectedSize);
         setCleanupLimit(cleanup);
       }
     } finally {
@@ -250,7 +250,7 @@ export function SmartScan() {
   };
 
   const lockedCategories = useMemo(() => {
-    if (isProUser()) return new Set<string>();
+    if (isProUser) return new Set<string>();
     
     // Free users can only clean cache and trash
     return new Set(['logs', 'downloads', 'applications']);
@@ -408,7 +408,7 @@ export function SmartScan() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-2xl font-bold">
-                        {t('common.selected')}: <span className="text-purple-600">{formatBytes(getTotalSelectedSize())}</span>
+                        {t('common.selected')}: <span className="text-purple-600">{formatBytes(totalSelectedSize)}</span>
                       </p>
                       <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                         {selectedCategories.size} {t('common.categoriesSelected', { count: selectedCategories.size })}

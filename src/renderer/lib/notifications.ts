@@ -30,7 +30,31 @@ export const initializeOneSignal = async () => {
       allowLocalhostAsSecureOrigin: true,
       notifyButton: {
         enable: false,
-      },
+        size: 'medium',
+        theme: 'default',
+        position: 'bottom-right',
+        offset: {
+          bottom: '64px',
+          left: '0px',
+          right: '0px'
+        },
+        showCredit: false,
+        prenotify: true,
+        text: {
+          'tip.state.unsubscribed': 'Subscribe to notifications',
+          'tip.state.subscribed': 'You\'re subscribed to notifications',
+          'tip.state.blocked': 'You\'ve blocked notifications',
+          'message.prenotify': 'Click to subscribe to notifications',
+          'message.action.subscribed': 'Thanks for subscribing!',
+          'message.action.resubscribed': 'You\'re subscribed to notifications',
+          'message.action.unsubscribed': 'You won\'t receive notifications anymore',
+          'dialog.main.title': 'Manage Site Notifications',
+          'dialog.main.button.subscribe': 'SUBSCRIBE',
+          'dialog.main.button.unsubscribe': 'UNSUBSCRIBE',
+          'dialog.blocked.title': 'Unblock Notifications',
+          'dialog.blocked.message': 'Follow these instructions to allow notifications:'
+        }
+      } as any,
     });
 
     // Mark as initialized
@@ -75,10 +99,8 @@ export enum NotificationType {
 // Send local Electron notification
 export const sendLocalNotification = (type: NotificationType, title: string, body: string) => {
   // Check if we're in Electron
-  if (window.electron) {
-    window.electron.showNotification({
-      title,
-      body,
+  if (window.electron?.showNotification) {
+    window.electron.showNotification(title, body, {
       icon: '/icon.png', // You'll need to add an icon
     });
   }
@@ -186,17 +208,17 @@ export const useNotificationStore = create<NotificationState>()(
       setScanNotifications: (enabled: boolean) => {
         set({ scanNotifications: enabled });
         // Update Electron notification preferences
-        if (window.electron) {
-          window.electron.setNotificationPreference('scan', enabled);
+        if (window.electron?.setNotificationPreference) {
+          window.electron.setNotificationPreference(enabled);
         }
       },
       setPromotionalNotifications: (enabled: boolean) => {
         set({ promotionalNotifications: enabled });
         // Update OneSignal subscription
         if (enabled) {
-          OneSignal.User.pushSubscription.optIn();
+          OneSignal.User.PushSubscription.optIn();
         } else {
-          OneSignal.User.pushSubscription.optOut();
+          OneSignal.User.PushSubscription.optOut();
         }
       },
     }),

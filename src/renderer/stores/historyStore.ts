@@ -67,14 +67,19 @@ export interface UserStats {
   lastScanDate?: Date;
   lastCleanupDate?: Date;
   averageJunkPerScan: number;
+  averageSpacePerCleanup: number;
   mostCleanedCategory: string;
   cleanupStreak: number;
+  currentStreak: number;
+  longestStreak: number;
   firstScanDate?: Date;
 }
 
 interface HistoryState {
   recentScans: ScanResult[];
   recentCleanups: CleanupResult[];
+  scanHistory: ScanResult[];
+  cleanupHistory: CleanupResult[];
   userStats: UserStats | null;
   isLoading: boolean;
   
@@ -87,6 +92,7 @@ interface HistoryState {
   getScanHistory: (limit?: number) => Promise<ScanResult[]>;
   getCleanupHistory: (limit?: number) => Promise<CleanupResult[]>;
   getMonthlyStats: () => Promise<{ month: string; cleaned: number }[]>;
+  getUserStats: () => UserStats;
 }
 
 const initialStats: UserStats = {
@@ -95,8 +101,11 @@ const initialStats: UserStats = {
   totalSpaceFreed: 0,
   totalTimeSaved: 0,
   averageJunkPerScan: 0,
+  averageSpacePerCleanup: 0,
   mostCleanedCategory: 'systemJunk',
   cleanupStreak: 0,
+  currentStreak: 0,
+  longestStreak: 0,
 };
 
 export const useHistoryStore = create<HistoryState>()(
@@ -104,6 +113,8 @@ export const useHistoryStore = create<HistoryState>()(
     (set, get) => ({
       recentScans: [],
       recentCleanups: [],
+      scanHistory: [],
+      cleanupHistory: [],
       userStats: null,
       isLoading: false,
 
@@ -281,8 +292,13 @@ export const useHistoryStore = create<HistoryState>()(
             averageJunkPerScan: scans.length > 0 
               ? scans.reduce((sum, s) => sum + s.totalJunkFound, 0) / scans.length 
               : 0,
+            averageSpacePerCleanup: cleanups.length > 0
+              ? totalSpaceFreed / cleanups.length
+              : 0,
             mostCleanedCategory,
             cleanupStreak: streak,
+            currentStreak: streak,
+            longestStreak: Math.max(streak, get().userStats?.longestStreak || 0),
           };
 
           // Save to Firestore
@@ -377,6 +393,10 @@ export const useHistoryStore = create<HistoryState>()(
           month,
           cleaned,
         }));
+      },
+
+      getUserStats: () => {
+        return get().userStats || initialStats;
       },
     }),
     {

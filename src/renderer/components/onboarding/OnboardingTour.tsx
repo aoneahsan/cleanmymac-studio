@@ -19,7 +19,7 @@ export function OnboardingTour({ onComplete }: OnboardingTourProps) {
     const driverObj = driver({
       showProgress: true,
       animate: true,
-      opacity: 0.75,
+      overlayOpacity: 0.75,
       stagePadding: 10,
       stageRadius: 8,
       popoverClass: 'driverjs-theme',

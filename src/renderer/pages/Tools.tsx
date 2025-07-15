@@ -8,6 +8,7 @@ import { DuplicateFinder } from '@renderer/components/features/DuplicateFinder';
 import { MemoryOptimizer } from '@renderer/components/features/MemoryOptimizer';
 import { SecureShredder } from '@renderer/components/features/SecureShredder';
 import { StartupManager } from '@renderer/components/features/StartupManager';
+import { BatteryMonitor } from '@renderer/components/features/BatteryMonitor';
 import { FeatureLock } from '@renderer/components/features/FeatureLock';
 import { useAuthStore } from '@renderer/stores/authStore';
 import { t } from '@renderer/lib/i18n-simple';
@@ -88,6 +89,16 @@ export function Tools() {
                 featureName={t('tools.secureShredder')}
               >
                 <SecureShredder />
+              </FeatureLock>
+            </TabPanel>
+
+            {/* Battery Monitor Tab */}
+            <TabPanel header={t('tools.batteryMonitor')} leftIcon="pi pi-bolt">
+              <FeatureLock 
+                isLocked={!isProUser()} 
+                featureName={t('tools.batteryMonitor')}
+              >
+                <BatteryMonitor />
               </FeatureLock>
             </TabPanel>
           </TabView>

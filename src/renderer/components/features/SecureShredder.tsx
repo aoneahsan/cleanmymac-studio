@@ -4,7 +4,6 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { ProgressBar } from 'primereact/progressbar';
 import { Message } from 'primereact/message';
-import { FileText } from 'primereact/fileupload';
 import { Divider } from 'primereact/divider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, Shield, AlertTriangle, FileX, HardDrive } from 'lucide-react';
@@ -50,7 +49,7 @@ export function SecureShredder() {
     const newFiles: FileToShred[] = droppedFiles.map(file => ({
       id: Math.random().toString(36).substr(2, 9),
       name: file.name,
-      path: file.path || file.name,
+      path: file.name, // File object doesn't have path property in browser
       size: file.size,
     }));
     
