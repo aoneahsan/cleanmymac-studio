@@ -30,5 +30,32 @@ contextBridge.exposeInMainWorld('electron', {
       // Return a function to remove the listener
       return () => ipcRenderer.removeListener(channel, wrappedListener);
     }
+  },
+  bookmarks: {
+    requestFolder: (title?: string) => ipcRenderer.invoke('bookmarks:request-folder', title),
+    requestFile: (title?: string) => ipcRenderer.invoke('bookmarks:request-file', title),
+    getAll: () => ipcRenderer.invoke('bookmarks:get-all'),
+    remove: (filePath: string) => ipcRenderer.invoke('bookmarks:remove', filePath),
+    hasAccess: (filePath: string) => ipcRenderer.invoke('bookmarks:has-access', filePath),
+  },
+  updater: {
+    check: () => ipcRenderer.invoke('updater:check'),
+    download: () => ipcRenderer.invoke('updater:download'),
+    install: () => ipcRenderer.invoke('updater:install'),
+    getChannel: () => ipcRenderer.invoke('updater:get-channel'),
+    setChannel: (channel: 'latest' | 'beta') => ipcRenderer.invoke('updater:set-channel', channel),
+    getVersion: () => ipcRenderer.invoke('updater:get-version'),
+    onUpdateAvailable: (callback: (info: any) => void) => {
+      ipcRenderer.on('update-available', (_event, info) => callback(info));
+    },
+    onDownloadProgress: (callback: (progress: any) => void) => {
+      ipcRenderer.on('update-download-progress', (_event, progress) => callback(progress));
+    },
+    onUpdateDownloaded: (callback: (info: any) => void) => {
+      ipcRenderer.on('update-downloaded', (_event, info) => callback(info));
+    },
+    onError: (callback: (error: string) => void) => {
+      ipcRenderer.on('update-error', (_event, error) => callback(error));
+    }
   }
 });

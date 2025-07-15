@@ -45,41 +45,36 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         },
         {
           "target": "zip",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         },
         {
           "target": "mas",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         },
         {
           "target": "mas-dev",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "bundleVersion": "100",
       "minimumSystemVersion": "10.15",
-      "extendInfo": {
-        "NSHumanReadableCopyright": "Copyright © 2025 Ahsan Mahmood",
-        "ITSAppUsesNonExemptEncryption": false,
-        "NSRequiresAquaSystemAppearance": false,
-        "NSMicrophoneUsageDescription": "CleanMyMac Pro+ needs access to microphone for voice commands.",
-        "NSCameraUsageDescription": "CleanMyMac Pro+ needs access to camera for document scanning.",
-        "NSContactsUsageDescription": "CleanMyMac Pro+ needs access to contacts to clean up duplicate entries.",
-        "NSCalendarsUsageDescription": "CleanMyMac Pro+ needs access to calendar to clean up old events.",
-        "NSRemindersUsageDescription": "CleanMyMac Pro+ needs access to reminders to clean up completed items.",
-        "NSLocationWhenInUseUsageDescription": "CleanMyMac Pro+ needs location access to provide localized cleanup suggestions.",
-        "NSPhotoLibraryUsageDescription": "CleanMyMac Pro+ needs access to photos to clean up duplicates and optimize storage.",
-        "NSAppleMusicUsageDescription": "CleanMyMac Pro+ needs access to media library to clean up duplicate files.",
-        "NSFileProviderDomainUsageDescription": "CleanMyMac Pro+ needs access to external file providers to scan for junk files.",
-        "NSSystemAdministrationUsageDescription": "CleanMyMac Pro+ needs administrator access to clean system files.",
-        "NSAppleEventsUsageDescription": "CleanMyMac Pro+ needs to send Apple Events to communicate with other apps.",
-        "NSLocalNetworkUsageDescription": "CleanMyMac Pro+ uses the local network to scan for networked drives.",
-        "NSBluetoothAlwaysUsageDescription": "CleanMyMac Pro+ uses Bluetooth to communicate with paired devices for optimization."
-      }
+      "extendInfo": "build/Info.plist"
     },
     "mas": {
       "category": "public.app-category.utilities",
@@ -109,6 +104,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "driver.js": "^1.3.6",
+    "electron-updater": "^6.6.2",
     "firebase": "^11.10.0",
     "framer-motion": "^12.23.5",
     "jspdf": "^3.0.1",

@@ -4,6 +4,8 @@ import { registerScannerHandlers } from '../src/main/ipc/scanner';
 import { registerDiskHealthHandlers } from '../src/main/ipc/diskHealth';
 import { registerAppUninstallerHandlers } from '../src/main/ipc/appUninstaller';
 import { registerPrivacyCleanerHandlers } from '../src/main/ipc/privacyCleaner';
+import { registerBookmarkHandlers } from '../src/main/utils/bookmarks';
+import { updater } from '../src/main/utils/auto-updater';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -35,6 +37,9 @@ function createWindow() {
   // Show window when ready
   mainWindow.once('ready-to-show', () => {
     mainWindow?.show();
+    
+    // Set main window for auto-updater
+    updater.setMainWindow(mainWindow!);
   });
 
   mainWindow.on('closed', () => {
@@ -61,3 +66,10 @@ registerScannerHandlers();
 registerDiskHealthHandlers();
 registerAppUninstallerHandlers();
 registerPrivacyCleanerHandlers();
+registerBookmarkHandlers();
+updater.registerIpcHandlers();
+
+// Initialize auto-updater
+app.whenReady().then(() => {
+  updater.initialize();
+});
