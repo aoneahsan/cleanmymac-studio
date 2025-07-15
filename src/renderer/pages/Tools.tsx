@@ -9,6 +9,8 @@ import { MemoryOptimizer } from '@renderer/components/features/MemoryOptimizer';
 import { SecureShredder } from '@renderer/components/features/SecureShredder';
 import { StartupManager } from '@renderer/components/features/StartupManager';
 import { BatteryMonitor } from '@renderer/components/features/BatteryMonitor';
+import { DiskHealthAnalyzer } from '@renderer/components/features/DiskHealthAnalyzer';
+import { PrivacyCleaner } from '@renderer/components/features/PrivacyCleaner';
 import { FeatureLock } from '@renderer/components/features/FeatureLock';
 import { useAuthStore } from '@renderer/stores/authStore';
 import { t } from '@renderer/lib/i18n-simple';
@@ -99,6 +101,26 @@ export function Tools() {
                 featureName={t('tools.batteryMonitor')}
               >
                 <BatteryMonitor />
+              </FeatureLock>
+            </TabPanel>
+
+            {/* Disk Health Analyzer Tab */}
+            <TabPanel header={t('tools.diskHealthAnalyzer')} leftIcon="pi pi-database">
+              <FeatureLock 
+                isLocked={!isProUser()} 
+                featureName={t('tools.diskHealthAnalyzer')}
+              >
+                <DiskHealthAnalyzer />
+              </FeatureLock>
+            </TabPanel>
+
+            {/* Privacy Cleaner Tab */}
+            <TabPanel header={t('tools.privacyCleaner')} leftIcon="pi pi-shield">
+              <FeatureLock 
+                isLocked={!isProUser()} 
+                featureName={t('tools.privacyCleaner')}
+              >
+                <PrivacyCleaner />
               </FeatureLock>
             </TabPanel>
           </TabView>

@@ -890,5 +890,271 @@
       "tip4": "Reduce screen brightness to extend battery life"
     },
     "calibrate": "Calibrate Battery"
+  },
+  "diskHealth": {
+    "title": "Disk Health Analyzer",
+    "loading": "Loading Disk Information...",
+    "analyzing": "Analyzing disk health and performance",
+    "overview": "Disk Overview",
+    "health": "Health Status",
+    "excellent": "Excellent",
+    "good": "Good",
+    "fair": "Fair",
+    "failing": "Failing",
+    "critical": "Critical",
+    "smart": {
+      "title": "S.M.A.R.T. Status",
+      "verified": "Verified",
+      "failing": "Failing", 
+      "unknown": "Unknown",
+      "attributes": "S.M.A.R.T. Attributes",
+      "rawValue": "Raw Value",
+      "threshold": "Threshold",
+      "worst": "Worst",
+      "status": "Status"
+    },
+    "details": {
+      "title": "Disk Details",
+      "model": "Model",
+      "serialNumber": "Serial Number",
+      "protocol": "Protocol",
+      "capacity": "Capacity",
+      "used": "Used Space",
+      "available": "Available Space",
+      "temperature": "Temperature",
+      "powerOnHours": "Power On Hours",
+      "powerCycles": "Power Cycles",
+      "writeAmount": "Total Written",
+      "readAmount": "Total Read",
+      "health": "Health Percentage"
+    },
+    "performance": {
+      "title": "Performance Metrics",
+      "readSpeed": "Read Speed",
+      "writeSpeed": "Write Speed",
+      "iops": "IOPS",
+      "latency": "Latency",
+      "throughput": "Throughput"
+    },
+    "history": {
+      "title": "Health History",
+      "noData": "No historical data available",
+      "chart": "Health Trend Chart"
+    },
+    "actions": {
+      "runTest": "Run Disk Test",
+      "verifyDisk": "Verify Disk",
+      "repairDisk": "Repair Disk",
+      "exportReport": "Export Report",
+      "scheduleCheck": "Schedule Check"
+    },
+    "alerts": {
+      "failing": "Disk is failing. Back up your data immediately!",
+      "highTemperature": "Disk temperature is too high",
+      "lowSpace": "Low disk space warning",
+      "smartError": "S.M.A.R.T. errors detected"
+    },
+    "tips": {
+      "title": "Disk Health Tips",
+      "tip1": "Keep at least 10% of disk space free for optimal performance",
+      "tip2": "Regular backups protect against disk failure",
+      "tip3": "High temperatures can reduce disk lifespan",
+      "tip4": "Enable TRIM for SSDs to maintain performance"
+    }
+  },
+  "appUninstaller": {
+    "searchApps": "Search applications...",
+    "showSystemApps": "Show System Applications",
+    "rescan": "Rescan Apps",
+    "uninstall": "Uninstall",
+    "installedApps": "Installed Applications",
+    "selectedSize": "Selected: {{size}}",
+    "noAppsFound": "No applications found",
+    "name": "Name",
+    "category": "Category",
+    "totalSize": "Total Size",
+    "lastUsed": "Last Used",
+    "appInfo": "Application Information",
+    "version": "Version",
+    "installed": "Installed",
+    "path": "Path",
+    "storageInfo": "Storage Information",
+    "appSize": "Application Size",
+    "dataSize": "Data Size",
+    "associatedFiles": "Associated Files",
+    "confirmUninstall": "Confirm Uninstall",
+    "uninstallWarning": "Are you sure you want to uninstall these applications?",
+    "uninstallWarningDesc": "This action cannot be undone. All application data will be permanently deleted.",
+    "uninstallOptions": "Uninstall Options",
+    "removePreferences": "Remove Preferences",
+    "removeCaches": "Remove Caches",
+    "removeLogs": "Remove Logs",
+    "createBackup": "Create Backup",
+    "appsToUninstall": "Applications to Uninstall",
+    "uninstallNow": "Uninstall Now",
+    "scanComplete": "Scan complete. Found {{count}} applications.",
+    "uninstallComplete": "Successfully uninstalled {{count}} application(s).",
+    "scanning": "Scanning for applications...",
+    "uninstalling": "Uninstalling {{name}}...",
+    "analyzingFiles": "Analyzing associated files...",
+    "removingFiles": "Removing application files...",
+    "cleaningUp": "Cleaning up remaining data...",
+    "error": {
+      "scanFailed": "Failed to scan applications",
+      "uninstallFailed": "Failed to uninstall {{name}}",
+      "permissionDenied": "Permission denied. Admin privileges required.",
+      "appRunning": "Cannot uninstall while application is running"
+    },
+    "categories": {
+      "productivity": "Productivity",
+      "development": "Development",
+      "design": "Design",
+      "utilities": "Utilities",
+      "media": "Media",
+      "games": "Games",
+      "education": "Education",
+      "lifestyle": "Lifestyle",
+      "business": "Business",
+      "communication": "Communication",
+      "system": "System",
+      "other": "Other"
+    },
+    "fileTypes": {
+      "preferences": "Preferences",
+      "caches": "Caches",
+      "logs": "Logs",
+      "supportFiles": "Support Files",
+      "savedState": "Saved Application State",
+      "crashReports": "Crash Reports",
+      "containers": "Containers",
+      "groupContainers": "Group Containers"
+    },
+    "tooltips": {
+      "selectApp": "Select application to view details",
+      "multiSelect": "Hold ⌘ to select multiple applications",
+      "systemApps": "System applications are hidden by default for safety",
+      "associatedFiles": "Files created and used by this application",
+      "lastUsedInfo": "Shows when the application was last opened"
+    }
+  },
+  "privacyCleaner": {
+    "title": "Privacy Cleaner",
+    "description": "Protect your privacy by removing browsing data, chat histories, and other sensitive information",
+    "readyToScan": "Ready to scan for privacy items",
+    "scanning": "Scanning for privacy items...",
+    "scanComplete": "Scan complete. Found {{totalItems}} privacy items ({{totalSize}})",
+    "cleanComplete": "Successfully cleaned {{count}} privacy items",
+    "startScan": "Start Privacy Scan",
+    "cleanNow": "Clean Now",
+    "totalData": "Total Data",
+    "totalItems": "Total Items",
+    "totalSize": "Total: {{size}}",
+    "itemsToClean": "{{count}} items to clean",
+    "riskLevels": "Risk Levels",
+    "browsers": "Browsers",
+    "system": "System",
+    "applications": "Applications",
+    "browsingHistory": "Browsing History",
+    "cookies": "Cookies",
+    "cache": "Cache",
+    "downloads": "Downloads",
+    "autofill": "Autofill Data",
+    "passwords": "Saved Passwords",
+    "sessions": "Active Sessions",
+    "recentDocuments": "Recent Documents",
+    "clipboard": "Clipboard History",
+    "screenshots": "Screenshots",
+    "trash": "Trash",
+    "diagnosticData": "Diagnostic Data",
+    "chatHistory": "Chat History",
+    "searchHistory": "Search History",
+    "appCaches": "App Caches",
+    "temporaryFiles": "Temporary Files",
+    "risk": {
+      "high": "High Risk",
+      "medium": "Medium Risk",
+      "low": "Low Risk"
+    },
+    "confirmClean": "Confirm Privacy Clean",
+    "cleanWarning": "Clean Privacy Data?",
+    "cleanWarningDesc": "This will permanently remove the selected privacy items. This action cannot be undone.",
+    "categories": {
+      "browsers": {
+        "title": "Web Browsers",
+        "description": "Browser history, cookies, and cached data"
+      },
+      "system": {
+        "title": "System Privacy",
+        "description": "System logs, recent items, and diagnostic data"
+      },
+      "applications": {
+        "title": "Application Data",
+        "description": "App caches, chat histories, and temporary files"
+      }
+    },
+    "details": {
+      "itemName": "Item",
+      "location": "Location",
+      "size": "Size",
+      "riskLevel": "Risk Level",
+      "lastModified": "Last Modified",
+      "description": "Description"
+    },
+    "browserItems": {
+      "safari": "Safari",
+      "chrome": "Google Chrome",
+      "firefox": "Mozilla Firefox",
+      "edge": "Microsoft Edge",
+      "brave": "Brave",
+      "opera": "Opera"
+    },
+    "systemItems": {
+      "recentItems": "Recent Items",
+      "quickLook": "Quick Look Cache",
+      "spotlight": "Spotlight Index",
+      "notifications": "Notification History",
+      "siri": "Siri History"
+    },
+    "appItems": {
+      "slack": "Slack",
+      "discord": "Discord",
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp",
+      "zoom": "Zoom",
+      "teams": "Microsoft Teams"
+    },
+    "tooltips": {
+      "riskHigh": "Contains sensitive personal information",
+      "riskMedium": "May contain personal data",
+      "riskLow": "Generally safe cached data",
+      "selectAll": "Select all items in this category",
+      "viewDetails": "View detailed information about this item"
+    },
+    "errors": {
+      "scanFailed": "Failed to scan privacy items",
+      "cleanFailed": "Failed to clean some privacy items",
+      "permissionDenied": "Permission denied. Some items require admin access."
+    },
+    "warnings": {
+      "activeSession": "Warning: This browser has active sessions. Cleaning cookies will log you out of websites.",
+      "passwordManager": "Warning: Cleaning passwords will remove all saved login credentials.",
+      "cannotUndo": "This action cannot be undone. Make sure you have backups if needed."
+    },
+    "success": {
+      "scanComplete": "Privacy scan completed successfully",
+      "cleanComplete": "Privacy data cleaned successfully",
+      "itemsCleaned": "Cleaned {{count}} privacy items"
+    },
+    "empty": {
+      "title": "No Privacy Items Found",
+      "description": "Your system is clean! No privacy items need attention right now.",
+      "rescan": "Rescan"
+    },
+    "stats": {
+      "itemsCleaned": "Items Cleaned",
+      "dataRemoved": "Data Removed",
+      "lastCleaned": "Last Cleaned",
+      "privacyScore": "Privacy Score"
+    }
   }
 }

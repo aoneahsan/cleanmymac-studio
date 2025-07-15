@@ -10,7 +10,7 @@ import { SoundButton } from '@renderer/components/ui/SoundButton';
 import { UpgradePrompt } from '@renderer/components/upgrade/UpgradePrompt';
 import { LimitIndicator } from '@renderer/components/features/LimitIndicator';
 import { FeatureLock } from '@renderer/components/features/FeatureLock';
-import { HardDrive, Zap, Shield, Activity, TrendingUp } from 'lucide-react';
+import { HardDrive, Zap, Shield, Activity, TrendingUp, Package } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LoadingSkeleton } from '@renderer/components/ui/LoadingSkeleton';
 import { OnboardingTour } from '@renderer/components/onboarding/OnboardingTour';
@@ -288,14 +288,15 @@ export function Dashboard() {
                   </motion.div>
 
                   <motion.div variants={item}>
-                    <FeatureLock isLocked={!isProUser()} featureName={t('dashboard.systemJunk')}>
-                      <Button 
-                        className="w-full h-32 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-blue-500 to-purple-500 border-0 text-white hover:from-blue-600 hover:to-purple-600 hover:scale-105 transition-all duration-300"
+                    <FeatureLock isLocked={!isProUser()} featureName={t('cleaners.appUninstaller')}>
+                      <SoundButton 
+                        className="w-full h-32 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-red-500 to-pink-500 border-0 text-white hover:from-red-600 hover:to-pink-600 hover:scale-105 transition-all duration-300"
                         disabled={!isProUser()}
+                        onClick={() => navigate({ to: '/app-uninstaller' })}
                       >
-                        <HardDrive className="w-10 h-10" />
-                        <span className="text-lg font-medium">{t('dashboard.systemJunk')}</span>
-                      </Button>
+                        <Package className="w-10 h-10" />
+                        <span className="text-lg font-medium">{t('cleaners.appUninstaller')}</span>
+                      </SoundButton>
                     </FeatureLock>
                   </motion.div>
 

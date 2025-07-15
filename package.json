@@ -17,12 +17,17 @@
     "electron:dev": "concurrently -k \"yarn dev\" \"wait-on tcp:5173 && yarn electron:watch\"",
     "electron:watch": "node scripts/build-electron.js && NODE_ENV=development electron ./dist-electron/electron/main.js",
     "dist": "yarn build",
+    "dist:mac": "yarn build && electron-builder --mac",
+    "dist:mas": "yarn build && electron-builder --mac mas",
+    "dist:mas-dev": "yarn build && electron-builder --mac mas-dev",
+    "dist:universal": "yarn build && electron-builder --mac --x64 --arm64",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit"
   },
   "build": {
-    "appId": "com.cleanmymacpro.app",
+    "appId": "com.zaions.cleanmymac_pro_plus",
     "productName": "CleanMyMac Pro+",
+    "copyright": "Copyright © 2025 Ahsan Mahmood",
     "directories": {
       "output": "release/${version}"
     },
@@ -32,10 +37,63 @@
     ],
     "mac": {
       "category": "public.app-category.utilities",
+      "icon": "build/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.inherit.plist",
       "target": [
-        "dmg",
-        "zip"
-      ]
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "mas",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "mas-dev",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "bundleVersion": "100",
+      "minimumSystemVersion": "10.15",
+      "extendInfo": {
+        "NSHumanReadableCopyright": "Copyright © 2025 Ahsan Mahmood",
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSRequiresAquaSystemAppearance": false,
+        "NSMicrophoneUsageDescription": "CleanMyMac Pro+ needs access to microphone for voice commands.",
+        "NSCameraUsageDescription": "CleanMyMac Pro+ needs access to camera for document scanning.",
+        "NSContactsUsageDescription": "CleanMyMac Pro+ needs access to contacts to clean up duplicate entries.",
+        "NSCalendarsUsageDescription": "CleanMyMac Pro+ needs access to calendar to clean up old events.",
+        "NSRemindersUsageDescription": "CleanMyMac Pro+ needs access to reminders to clean up completed items.",
+        "NSLocationWhenInUseUsageDescription": "CleanMyMac Pro+ needs location access to provide localized cleanup suggestions.",
+        "NSPhotoLibraryUsageDescription": "CleanMyMac Pro+ needs access to photos to clean up duplicates and optimize storage.",
+        "NSAppleMusicUsageDescription": "CleanMyMac Pro+ needs access to media library to clean up duplicate files.",
+        "NSFileProviderDomainUsageDescription": "CleanMyMac Pro+ needs access to external file providers to scan for junk files.",
+        "NSSystemAdministrationUsageDescription": "CleanMyMac Pro+ needs administrator access to clean system files.",
+        "NSAppleEventsUsageDescription": "CleanMyMac Pro+ needs to send Apple Events to communicate with other apps.",
+        "NSLocalNetworkUsageDescription": "CleanMyMac Pro+ uses the local network to scan for networked drives.",
+        "NSBluetoothAlwaysUsageDescription": "CleanMyMac Pro+ uses Bluetooth to communicate with paired devices for optimization."
+      }
+    },
+    "mas": {
+      "category": "public.app-category.utilities",
+      "entitlements": "build/entitlements.mas.plist",
+      "entitlementsInherit": "build/entitlements.mas.inherit.plist",
+      "hardenedRuntime": false,
+      "provisioningProfile": "build/embedded.provisionprofile"
+    },
+    "masDev": {
+      "category": "public.app-category.utilities",
+      "entitlements": "build/entitlements.mas-dev.plist",
+      "entitlementsInherit": "build/entitlements.mas-dev.inherit.plist",
+      "hardenedRuntime": false,
+      "provisioningProfile": "build/mas-dev.provisionprofile"
     }
   },
   "dependencies": {

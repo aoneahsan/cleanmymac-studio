@@ -8,6 +8,10 @@ import { SmartScan } from './pages/SmartScan';
 import { History } from './pages/History';
 import { Tools } from './pages/Tools';
 import { Upgrade } from './pages/Upgrade';
+import { AppUninstaller } from './pages/AppUninstaller';
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { TermsOfService } from './pages/TermsOfService';
+import { Contact } from './pages/Contact';
 import { AppLayout } from './components/layout/AppLayout';
 
 // Create root route
@@ -71,6 +75,30 @@ const upgradeRoute = createRoute({
   component: Upgrade,
 });
 
+const appUninstallerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/app-uninstaller',
+  component: AppUninstaller,
+});
+
+const privacyPolicyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/privacy-policy',
+  component: PrivacyPolicy,
+});
+
+const termsOfServiceRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/terms-of-service',
+  component: TermsOfService,
+});
+
+const contactRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/contact',
+  component: Contact,
+});
+
 // Create the route tree
 const routeTree = rootRoute.addChildren([
   welcomeRoute,
@@ -82,6 +110,10 @@ const routeTree = rootRoute.addChildren([
   historyRoute,
   toolsRoute,
   upgradeRoute,
+  appUninstallerRoute,
+  privacyPolicyRoute,
+  termsOfServiceRoute,
+  contactRoute,
 ]);
 
 // Create the router

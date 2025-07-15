@@ -10,6 +10,7 @@ import { useAuthStore } from '@renderer/stores/authStore';
 import { useNavigate } from '@tanstack/react-router';
 import { t } from '@renderer/lib/i18n-simple';
 import { AnimatedBackground } from '@renderer/components/ui/AnimatedBackground';
+import { Footer } from './Footer';
 
 export function AppLayout() {
   const { insets, titlebarHeight, isElectron } = useSafeArea();
@@ -84,8 +85,10 @@ export function AppLayout() {
     </div>
   );
 
+  const showFooter = !['/welcome', '/', '/scanning', '/scan-results'].includes(location.pathname);
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative flex flex-col">
       <AnimatedBackground />
       
       {/* Safe area for titlebar on macOS */}
@@ -121,13 +124,12 @@ export function AppLayout() {
 
       {/* Main content with safe area padding */}
       <main 
-        className="relative"
+        className="relative flex-1"
         style={{
           paddingTop: isElectron ? titlebarHeight + 60 : 60, // titlebar + navbar height
           paddingLeft: insets.left,
           paddingRight: insets.right,
           paddingBottom: insets.bottom,
-          minHeight: '100vh',
         }}
       >
         <AnimatePresence mode="wait">
@@ -143,6 +145,9 @@ export function AppLayout() {
           </motion.div>
         </AnimatePresence>
       </main>
+
+      {/* Footer */}
+      {showFooter && <Footer />}
 
       {/* Bottom safe area indicator for devices with home indicator */}
       {insets.bottom > 0 && (
