@@ -35,6 +35,12 @@ export function AppLayout() {
       className: 'menuitem-history',
     },
     {
+      label: t('tools.title'),
+      icon: 'pi pi-wrench',
+      command: () => navigate({ to: '/tools' }),
+      className: !isProUser() ? 'opacity-75' : '',
+    },
+    {
       label: t('settings.title'),
       icon: 'pi pi-cog',
       command: () => navigate({ to: '/settings' }),

@@ -17,6 +17,7 @@ import { OnboardingTour } from '@renderer/components/onboarding/OnboardingTour';
 import { SystemMonitor } from '@renderer/components/widgets/SystemMonitor';
 import { QuickTips } from '@renderer/components/widgets/QuickTips';
 import { DragDropAnalyzer } from '@renderer/components/features/DragDropAnalyzer';
+import { ScheduledScans } from '@renderer/components/features/ScheduledScans';
 import { formatBytes } from '@renderer/lib/utils';
 import { t } from '@renderer/lib/i18n-simple';
 
@@ -297,6 +298,20 @@ export function Dashboard() {
             transition={{ delay: 0.6 }}
           >
             <DragDropAnalyzer />
+          </motion.div>
+
+          {/* Scheduled Scans */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+          >
+            <FeatureLock 
+              isLocked={!isProUser()} 
+              featureName={t('schedules.title')}
+            >
+              <ScheduledScans />
+            </FeatureLock>
           </motion.div>
         </motion.div>
       </AnimatePresence>

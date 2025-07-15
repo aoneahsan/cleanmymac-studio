@@ -6,6 +6,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Settings } from './pages/Settings';
 import { SmartScan } from './pages/SmartScan';
 import { History } from './pages/History';
+import { Tools } from './pages/Tools';
 import { AppLayout } from './components/layout/AppLayout';
 
 // Create root route
@@ -57,6 +58,12 @@ const historyRoute = createRoute({
   component: History,
 });
 
+const toolsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/tools',
+  component: Tools,
+});
+
 // Create the route tree
 const routeTree = rootRoute.addChildren([
   welcomeRoute,
@@ -66,6 +73,7 @@ const routeTree = rootRoute.addChildren([
   settingsRoute,
   smartScanRoute,
   historyRoute,
+  toolsRoute,
 ]);
 
 // Create the router
