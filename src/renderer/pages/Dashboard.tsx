@@ -16,6 +16,7 @@ import { LoadingSkeleton } from '@renderer/components/ui/LoadingSkeleton';
 import { OnboardingTour } from '@renderer/components/onboarding/OnboardingTour';
 import { SystemMonitor } from '@renderer/components/widgets/SystemMonitor';
 import { QuickTips } from '@renderer/components/widgets/QuickTips';
+import { NetworkSpeed } from '@renderer/components/widgets/NetworkSpeed';
 import { DragDropAnalyzer } from '@renderer/components/features/DragDropAnalyzer';
 import { ScheduledScans } from '@renderer/components/features/ScheduledScans';
 import { formatBytes } from '@renderer/lib/utils';
@@ -43,6 +44,7 @@ export function Dashboard() {
   const [usage, setUsage] = useState<{ scan: any; cleanup: any } | null>(null);
   const [showMonitor, setShowMonitor] = useState(true);
   const [showTips, setShowTips] = useState(true);
+  const [showNetworkSpeed, setShowNetworkSpeed] = useState(false);
 
   useEffect(() => {
     loadUsage();
@@ -69,6 +71,7 @@ export function Dashboard() {
       <OnboardingTour />
       {showMonitor && <SystemMonitor onClose={() => setShowMonitor(false)} />}
       {showTips && <QuickTips onClose={() => setShowTips(false)} />}
+      {showNetworkSpeed && <NetworkSpeed onClose={() => setShowNetworkSpeed(false)} />}
       <AnimatePresence mode="wait">
         <motion.div
           initial={{ opacity: 0 }}
@@ -97,6 +100,39 @@ export function Dashboard() {
             >
               {isProUser() ? t('dashboard.proMember') : t('dashboard.freePlan')}
             </Tag>
+          </motion.div>
+
+          {/* Widget Toolbar */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="flex items-center gap-2 justify-end"
+          >
+            <Button
+              label={t('dashboard.widgets.systemMonitor')}
+              icon={showMonitor ? "pi pi-eye-slash" : "pi pi-eye"}
+              size="small"
+              severity="secondary"
+              text
+              onClick={() => setShowMonitor(!showMonitor)}
+            />
+            <Button
+              label={t('dashboard.widgets.quickTips')}
+              icon={showTips ? "pi pi-eye-slash" : "pi pi-eye"}
+              size="small"
+              severity="secondary"
+              text
+              onClick={() => setShowTips(!showTips)}
+            />
+            <Button
+              label={t('dashboard.widgets.networkSpeed')}
+              icon={showNetworkSpeed ? "pi pi-eye-slash" : "pi pi-eye"}
+              size="small"
+              severity="secondary"
+              text
+              onClick={() => setShowNetworkSpeed(!showNetworkSpeed)}
+            />
           </motion.div>
 
           {/* Free User Upgrade Prompt */}

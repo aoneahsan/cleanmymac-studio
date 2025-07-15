@@ -6,6 +6,8 @@ import { TabView, TabPanel } from 'primereact/tabview';
 import { motion } from 'framer-motion';
 import { DuplicateFinder } from '@renderer/components/features/DuplicateFinder';
 import { MemoryOptimizer } from '@renderer/components/features/MemoryOptimizer';
+import { SecureShredder } from '@renderer/components/features/SecureShredder';
+import { StartupManager } from '@renderer/components/features/StartupManager';
 import { FeatureLock } from '@renderer/components/features/FeatureLock';
 import { useAuthStore } from '@renderer/stores/authStore';
 import { t } from '@renderer/lib/i18n-simple';
@@ -95,27 +97,4 @@ export function Tools() {
   );
 }
 
-// Placeholder components for other tools
-function StartupManager() {
-  return (
-    <div className="text-center py-12">
-      <Activity className="w-24 h-24 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-      <h3 className="text-xl font-semibold mb-2">{t('tools.startupManager')}</h3>
-      <p className="text-gray-600 dark:text-gray-400">
-        {t('tools.comingSoon')}
-      </p>
-    </div>
-  );
-}
 
-function SecureShredder() {
-  return (
-    <div className="text-center py-12">
-      <Shield className="w-24 h-24 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-      <h3 className="text-xl font-semibold mb-2">{t('tools.secureShredder')}</h3>
-      <p className="text-gray-600 dark:text-gray-400">
-        {t('tools.comingSoon')}
-      </p>
-    </div>
-  );
-}
