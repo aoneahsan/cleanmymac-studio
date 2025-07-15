@@ -2,14 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useAuthStore } from '@renderer/stores/authStore';
 import { usePlanLimits } from '@renderer/hooks/usePlanLimits';
-import { Card, CardContent, CardHeader, CardTitle } from '@renderer/components/ui/card';
-import { Button } from '@renderer/components/ui/button';
-import { Badge } from '@renderer/components/ui/badge';
+import { Card } from 'primereact/card';
+import { Button } from 'primereact/button';
+import { Tag } from 'primereact/tag';
+import { ProgressBar } from 'primereact/progressbar';
 import { UpgradePrompt } from '@renderer/components/upgrade/UpgradePrompt';
 import { LimitIndicator } from '@renderer/components/features/LimitIndicator';
 import { FeatureLock } from '@renderer/components/features/FeatureLock';
-import { HardDrive, Zap, Shield, Activity } from 'lucide-react';
+import { HardDrive, Zap, Shield, Activity, TrendingUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { LoadingSkeleton } from '@renderer/components/ui/LoadingSkeleton';
 import { formatBytes } from '@renderer/lib/utils';
+import { t } from '@renderer/lib/i18n-simple';
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+};
 
 export function Dashboard() {
   const { user, isProUser } = useAuthStore();
@@ -29,128 +48,238 @@ export function Dashboard() {
     setUsage({ scan: scanUsage, cleanup: cleanupUsage });
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto p-8 space-y-8">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Dashboard</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
-              Welcome back, {user?.email}
-            </p>
-          </div>
-          <Badge variant={isProUser() ? 'premium' : 'outline'}>
-            {isProUser() ? 'Pro Member' : 'Free Plan'}
-          </Badge>
-        </div>
-
-        {/* Free User Upgrade Prompt */}
-        {!isProUser() && (
-          <UpgradePrompt />
-        )}
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Total Space Freed
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">0 GB</div>
-              <p className="text-xs text-gray-500 mt-1">All time</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Last Scan
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">Never</div>
-              <p className="text-xs text-gray-500 mt-1">Run your first scan</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                System Health
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">Good</div>
-              <p className="text-xs text-gray-500 mt-1">No issues found</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Plan Usage
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {usage ? (
-                <>
-                  <div className="text-2xl font-bold">
-                    {isProUser() ? 'Unlimited' : `${usage.scan.used}/${usage.scan.limit} scans`}
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {isProUser() ? 'Pro plan' : 'Daily limit'}
-                  </p>
-                </>
-              ) : (
-                <div className="animate-pulse">
-                  <div className="h-8 bg-gray-200 rounded w-24 mb-1"></div>
-                  <div className="h-3 bg-gray-200 rounded w-16"></div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Quick Actions */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Button 
-                variant="outline" 
-                className="h-24 flex-col gap-2"
-                onClick={() => navigate({ to: '/smart-scan' })}
-              >
-                <Zap className="w-6 h-6" />
-                <span>Smart Scan</span>
-              </Button>
-              <FeatureLock isLocked={!isProUser()} featureName="System Junk">
-                <Button variant="outline" className="h-24 flex-col gap-2 w-full">
-                  <HardDrive className="w-6 h-6" />
-                  <span>System Junk</span>
-                </Button>
-              </FeatureLock>
-              <FeatureLock isLocked={!isProUser()} featureName="Privacy Scan">
-                <Button variant="outline" className="h-24 flex-col gap-2 w-full">
-                  <Shield className="w-6 h-6" />
-                  <span>Privacy Scan</span>
-                </Button>
-              </FeatureLock>
-              <FeatureLock isLocked={!isProUser()} featureName="Optimization">
-                <Button variant="outline" className="h-24 flex-col gap-2 w-full">
-                  <Activity className="w-6 h-6" />
-                  <span>Optimization</span>
-                </Button>
-              </FeatureLock>
-            </div>
-          </CardContent>
-        </Card>
+  if (!usage) {
+    return (
+      <div className="max-w-7xl mx-auto p-6">
+        <LoadingSkeleton type="dashboard" />
       </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/20 to-pink-50/20 dark:from-gray-900 dark:via-purple-900/10 dark:to-pink-900/10">
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="max-w-7xl mx-auto p-6 space-y-6"
+        >
+          {/* Header */}
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center justify-between mb-8"
+          >
+            <div>
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
+                {t('dashboard.title')}
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400 mt-2 text-lg">
+                {t('dashboard.welcomeBack', { email: user?.email })}
+              </p>
+            </div>
+            <Tag 
+              severity={isProUser() ? 'success' : 'info'} 
+              className="px-6 py-3 text-lg"
+              icon="pi pi-star-fill"
+            >
+              {isProUser() ? t('dashboard.proMember') : t('dashboard.freePlan')}
+            </Tag>
+          </motion.div>
+
+          {/* Free User Upgrade Prompt */}
+          {!isProUser() && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <UpgradePrompt />
+            </motion.div>
+          )}
+
+          {/* Quick Stats */}
+          <motion.div 
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            <motion.div variants={item} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Card className="hover-lift glass overflow-hidden group">
+                <div className="p-6 relative">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-500" />
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 text-white">
+                        <TrendingUp className="w-6 h-6" />
+                      </div>
+                      <Tag severity="success" value="All time" />
+                    </div>
+                    <div className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                      0 GB
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      {t('dashboard.totalSpaceFreed')}
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={item} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Card className="hover-lift glass overflow-hidden group">
+                <div className="p-6 relative">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-500" />
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 text-white">
+                        <Zap className="w-6 h-6" />
+                      </div>
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                      {t('dashboard.never')}
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      {t('dashboard.lastScan')}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-2">{t('dashboard.runFirstScan')}</p>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={item} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Card className="hover-lift glass overflow-hidden group">
+                <div className="p-6 relative">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-500" />
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="p-3 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 text-white">
+                        <Shield className="w-6 h-6" />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                        <span className="text-xs text-green-600 dark:text-green-400">Active</span>
+                      </div>
+                    </div>
+                    <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+                      {t('dashboard.good')}
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      {t('dashboard.systemHealth')}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-2">{t('dashboard.noIssuesFound')}</p>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={item} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Card className="hover-lift glass overflow-hidden group">
+                <div className="p-6 relative">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-500" />
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="p-3 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 text-white">
+                        <Activity className="w-6 h-6" />
+                      </div>
+                      <Tag severity={isProUser() ? 'success' : 'warning'} value={isProUser() ? 'Pro' : 'Free'} />
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                      {isProUser() ? t('dashboard.unlimited') : `${usage.scan.used}/${usage.scan.limit}`}
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      {t('dashboard.planUsage')}
+                    </p>
+                    {!isProUser() && (
+                      <ProgressBar 
+                        value={(usage.scan.used / usage.scan.limit) * 100} 
+                        className="mt-3"
+                        showValue={false}
+                        style={{ height: '0.5rem' }}
+                      />
+                    )}
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+          </motion.div>
+
+          {/* Quick Actions */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <Card className="shadow-2xl glass overflow-hidden">
+              <div className="p-8">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent mb-6">
+                  {t('dashboard.quickActions')}
+                </h2>
+                <motion.div 
+                  variants={container}
+                  initial="hidden"
+                  animate="show"
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                >
+                  <motion.div variants={item}>
+                    <Button 
+                      className="w-full h-32 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-purple-500 to-pink-500 border-0 text-white hover:from-purple-600 hover:to-pink-600 hover:scale-105 transition-all duration-300"
+                      onClick={() => navigate({ to: '/smart-scan' })}
+                    >
+                      <motion.div
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                      >
+                        <Zap className="w-10 h-10" />
+                      </motion.div>
+                      <span className="text-lg font-medium">{t('dashboard.smartScan')}</span>
+                    </Button>
+                  </motion.div>
+
+                  <motion.div variants={item}>
+                    <FeatureLock isLocked={!isProUser()} featureName={t('dashboard.systemJunk')}>
+                      <Button 
+                        className="w-full h-32 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-blue-500 to-purple-500 border-0 text-white hover:from-blue-600 hover:to-purple-600 hover:scale-105 transition-all duration-300"
+                        disabled={!isProUser()}
+                      >
+                        <HardDrive className="w-10 h-10" />
+                        <span className="text-lg font-medium">{t('dashboard.systemJunk')}</span>
+                      </Button>
+                    </FeatureLock>
+                  </motion.div>
+
+                  <motion.div variants={item}>
+                    <FeatureLock isLocked={!isProUser()} featureName={t('dashboard.privacyScan')}>
+                      <Button 
+                        className="w-full h-32 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-green-500 to-emerald-500 border-0 text-white hover:from-green-600 hover:to-emerald-600 hover:scale-105 transition-all duration-300"
+                        disabled={!isProUser()}
+                      >
+                        <Shield className="w-10 h-10" />
+                        <span className="text-lg font-medium">{t('dashboard.privacyScan')}</span>
+                      </Button>
+                    </FeatureLock>
+                  </motion.div>
+
+                  <motion.div variants={item}>
+                    <FeatureLock isLocked={!isProUser()} featureName={t('dashboard.optimization')}>
+                      <Button 
+                        className="w-full h-32 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-orange-500 to-red-500 border-0 text-white hover:from-orange-600 hover:to-red-600 hover:scale-105 transition-all duration-300"
+                        disabled={!isProUser()}
+                      >
+                        <Activity className="w-10 h-10" />
+                        <span className="text-lg font-medium">{t('dashboard.optimization')}</span>
+                      </Button>
+                    </FeatureLock>
+                  </motion.div>
+                </motion.div>
+              </div>
+            </Card>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

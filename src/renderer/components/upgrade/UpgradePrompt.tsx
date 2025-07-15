@@ -29,9 +29,11 @@ export function UpgradePrompt({
   if (compact) {
     return (
       <>
-        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 rounded-lg">
+        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl border border-primary/20">
           <div className="flex items-center gap-3">
-            <Crown className="w-5 h-5 text-yellow-600" />
+            <div className="p-2 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500">
+              <Crown className="w-5 h-5 text-white" />
+            </div>
             <span className="font-medium">Upgrade to Pro for unlimited access</span>
           </div>
           <Button 
@@ -57,11 +59,11 @@ export function UpgradePrompt({
 
   return (
     <>
-      <Card className="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 border-yellow-200 dark:border-yellow-800">
+      <Card className="card-vibrancy bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-2 border-primary/20">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl">{title}</CardTitle>
-            <Badge variant="premium" className="text-sm">
+            <CardTitle className="text-2xl gradient-text">{title}</CardTitle>
+            <Badge variant="premium" className="text-sm px-3 py-1">
               <Crown className="w-4 h-4 mr-1" />
               PRO
             </Badge>
@@ -76,11 +78,11 @@ export function UpgradePrompt({
               const Icon = icons[index % icons.length];
               
               return (
-                <div key={index} className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900/50 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
+                <div key={index} className="flex items-start gap-3 group">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                    <Icon className="w-5 h-5 text-primary" />
                   </div>
-                  <span className="text-sm">{feature}</span>
+                  <span className="text-sm pt-2">{feature}</span>
                 </div>
               );
             })}
