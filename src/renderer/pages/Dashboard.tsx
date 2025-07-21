@@ -67,7 +67,7 @@ export function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/20 to-pink-50/20 dark:from-gray-900 dark:via-purple-900/10 dark:to-pink-900/10">
+    <div className="min-h-full bg-gradient-to-br from-gray-50 via-purple-50/20 to-pink-50/20 dark:from-gray-900 dark:via-purple-900/10 dark:to-pink-900/10">
       <OnboardingTour />
       {showMonitor && <SystemMonitor onClose={() => setShowMonitor(false)} />}
       {showTips && <QuickTips onClose={() => setShowTips(false)} />}
@@ -77,25 +77,25 @@ export function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="max-w-7xl mx-auto p-6 space-y-6"
+          className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6"
         >
           {/* Header */}
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center justify-between mb-8"
+            className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6"
           >
             <div className="onboarding-welcome">
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
                 {t('dashboard.title')}
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-2 text-lg">
+              <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-400 mt-1 sm:mt-2">
                 {t('dashboard.welcomeBack', { email: user?.email })}
               </p>
             </div>
             <Tag 
               severity={isProUser() ? 'success' : 'info'} 
-              className="px-6 py-3 text-lg"
+              className="px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-lg"
               icon="pi pi-star-fill"
             >
               {isProUser() ? t('dashboard.proMember') : t('dashboard.freePlan')}
@@ -107,7 +107,7 @@ export function Dashboard() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="flex items-center gap-2 justify-end"
+            className="flex flex-wrap items-center gap-2 justify-center sm:justify-end"
           >
             <Button
               label={t('dashboard.widgets.systemMonitor')}
@@ -151,7 +151,7 @@ export function Dashboard() {
             variants={container}
             initial="hidden"
             animate="show"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
             data-tour="stats"
           >
             <motion.div variants={item} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -270,7 +270,7 @@ export function Dashboard() {
                   variants={container}
                   initial="hidden"
                   animate="show"
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
                 >
                   <motion.div variants={item} data-tour="smart-scan">
                     <SoundButton 

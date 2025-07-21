@@ -42,7 +42,7 @@ export function SafeAreaProvider({ children }: SafeAreaProviderProps) {
     if (isElectron) {
       // macOS titlebar area
       setInsets({
-        top: 28, // Standard macOS titlebar height
+        top: 0, // We handle titlebar separately in layout
         right: 0,
         bottom: 0,
         left: 0,
@@ -51,12 +51,7 @@ export function SafeAreaProvider({ children }: SafeAreaProviderProps) {
       // Check for notch (MacBook Pro 14" and 16" with notch)
       if (window.screen.height >= 982 && window.devicePixelRatio >= 2) {
         setHasNotch(true);
-        setInsets({
-          top: 38, // Extra space for notch
-          right: 0,
-          bottom: 0,
-          left: 0,
-        });
+        // Still keep insets at 0 since we handle titlebar in layout
       }
     } else {
       // Web browser safe areas
@@ -76,7 +71,7 @@ export function SafeAreaProvider({ children }: SafeAreaProviderProps) {
     }
   }, [isElectron]);
 
-  const titlebarHeight = insets.top || 28;
+  const titlebarHeight = 28; // Standard macOS titlebar height
 
   return (
     <SafeAreaContext.Provider 

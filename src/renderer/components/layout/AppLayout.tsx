@@ -128,9 +128,9 @@ export function AppLayout() {
 
       {/* Main content with safe area padding */}
       <main 
-        className="relative flex-1"
+        className="relative flex-1 overflow-y-auto"
         style={{
-          paddingTop: isElectron ? titlebarHeight + 60 : 60, // titlebar + navbar height
+          marginTop: isElectron ? titlebarHeight + 56 : 56, // titlebar + navbar height (56px is standard navbar height)
           paddingLeft: insets.left,
           paddingRight: insets.right,
           paddingBottom: insets.bottom,
