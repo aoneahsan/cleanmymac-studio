@@ -11,9 +11,11 @@ import { Divider } from 'primereact/divider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FeatureLock } from '@renderer/components/features/FeatureLock';
 import { LimitIndicator } from '@renderer/components/features/LimitIndicator';
+import { CleanButton } from '@renderer/components/features/CleanButton';
 import { usePlanLimits } from '@renderer/hooks/usePlanLimits';
 import { useScanStore } from '@renderer/stores/scanStore';
 import { useHistoryStore } from '@renderer/stores/historyStore';
+import { useAuthStore } from '@renderer/stores/authStore';
 import { useProgressiveAction } from '@renderer/hooks/useProgressiveAction';
 import { Zap, Trash2, FileText, Download, Package, AlertCircle, Crown } from 'lucide-react';
 import { formatBytes } from '@renderer/lib/utils';
@@ -99,8 +101,9 @@ CategoryCard.displayName = 'CategoryCard';
 
 export function SmartScan() {
   const navigate = useNavigate();
-  const { scanResults, isScanning, startScan } = useScanStore();
+  const { scanResults, isScanning, startScan, startAuthenticatedScan } = useScanStore();
   const { addScanResult, addCleanupResult } = useHistoryStore();
+  const { user } = useAuthStore();
   const { checkScanLimit, checkCleanupLimit, isProUser, formatLimitMessage } = usePlanLimits();
   const { playSound } = useSoundEffect();
   
@@ -122,7 +125,10 @@ export function SmartScan() {
       playSound('scanStart');
       const startTime = Date.now();
       
-      await startScan((progress) => {
+      // Use authenticated scan if user is logged in
+      const scanFunction = user ? startAuthenticatedScan : startScan;
+      
+      await scanFunction((progress) => {
         setScanProgress(progress.percentage || 0);
         if ((progress.percentage || 0) % 20 === 0) {
           // Update notification every 20%
@@ -247,6 +253,14 @@ export function SmartScan() {
       newSelected.add(categoryType);
     }
     setSelectedCategories(newSelected);
+  };
+
+  const getSelectedItems = (): ScanItem[] => {
+    if (!scanResults) return [];
+    
+    return scanResults.categories
+      .filter((cat: ScanCategory) => selectedCategories.has(cat.type))
+      .flatMap((cat: ScanCategory) => cat.items || []);
   };
 
   const lockedCategories = useMemo(() => {
@@ -415,41 +429,38 @@ export function SmartScan() {
                       </p>
                     </div>
                     
-                    <div className="flex items-center gap-4">
-                      {!isProUser && cleanupLimit && (
-                        <div className="text-right">
-                          <p className="text-sm text-gray-600">
-                            {t('common.monthlyLimit')}: {formatBytes(cleanupLimit.remaining || 0)} {t('common.remaining')}
-                          </p>
-                        </div>
+                    <div className="flex-1 ml-8">
+                      {selectedCategories.size > 0 && scanResults && (
+                        <CleanButton
+                          items={getSelectedItems()}
+                          totalSize={totalSelectedSize}
+                          onCleanComplete={(freedSpace) => {
+                            // Save cleanup to history
+                            const scanId = 'scan_' + Date.now();
+                            addCleanupResult({
+                              scanId,
+                              timestamp: new Date(),
+                              totalCleaned: freedSpace,
+                              itemsCleaned: {
+                                systemJunk: scanResults?.categories.find(c => c.type === 'logs' && selectedCategories.has(c.type))?.size || 0,
+                                applicationCaches: scanResults?.categories.find(c => c.type === 'cache' && selectedCategories.has(c.type))?.size || 0,
+                                downloads: scanResults?.categories.find(c => c.type === 'downloads' && selectedCategories.has(c.type))?.size || 0,
+                                trashBins: scanResults?.categories.find(c => c.type === 'trash' && selectedCategories.has(c.type))?.size || 0,
+                              },
+                              duration: 0,
+                              status: 'completed',
+                            });
+                            
+                            notifyCleanComplete(formatBytes(freedSpace));
+                            playSound('cleanComplete');
+                            
+                            // Reset after cleanup
+                            setSelectedCategories(new Set());
+                          }}
+                        />
                       )}
-                      
-                      <Button
-                        label={cleanupAction.isLoading ? t('scan.cleaning') : t('scan.clean')}
-                        icon={cleanupAction.isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-trash'}
-                        size="large"
-                        severity="danger"
-                        onClick={cleanupAction.execute}
-                        disabled={selectedCategories.size === 0 || cleanupAction.isLoading || (cleanupLimit && !cleanupLimit.allowed)}
-                      />
                     </div>
                   </div>
-                  
-                  {cleanupAction.isLoading && (
-                    <ProgressBar 
-                      value={cleanupAction.progress} 
-                      className="mt-4"
-                      showValue
-                    />
-                  )}
-                  
-                  {cleanupLimit && !cleanupLimit.allowed && (
-                    <Message 
-                      severity="error" 
-                      text={formatLimitMessage(cleanupLimit, 'cleanup')}
-                      className="mt-4"
-                    />
-                  )}
                 </div>
               </Card>
 

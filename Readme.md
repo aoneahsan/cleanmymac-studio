@@ -1,366 +1,187 @@
-# CleanMyMac Pro+ - The Free Mac Cleaner - ElectronJs App For MacOs
+# CleanMyMac Pro+
 
-A comprehensive, open-source alternative to commercial Mac cleaning software. Written entirely in bash, it provides powerful cleaning and optimization features while ensuring your data safety.
+A professional macOS system cleaning and optimization application built with Electron, React, and TypeScript.
 
-## 🚀 Features
+## Overview
 
-### 1. **Smart Scan**
+CleanMyMac Pro+ is a desktop application designed to help macOS users clean and optimize their systems. Built as a modern Electron application with a React frontend and Firebase backend, it provides a comprehensive set of tools for system maintenance.
 
-- One-click comprehensive system analysis
-- Identifies junk files, caches, and optimization opportunities
-- Safe cleanup with user confirmation
+## Features
 
-### 2. **System Junk Cleaner**
+### Implemented Features
+- **Smart Scan**: Quick system analysis for junk files
+- **Authentication System**: Firebase-based login/signup
+- **Free/Pro Plans**: Freemium model with usage limits
+  - Free: 500MB cleanup limit per month
+  - Pro: Unlimited cleanup and advanced features
+- **App Uninstaller**: Remove applications and their associated files
+- **Privacy Cleaner**: Scan browser data and system privacy items
+- **Disk Health Analyzer**: Check disk information and statistics
+- **Auto-Update System**: Built-in update mechanism
 
-- User and system cache cleaning
-- Log file cleanup
-- Temporary file removal
-- Broken preference files
-- Language file cleanup
+### Features in Development
+- **System Junk Cleaner**: Deep cleaning of system files
+- **Large & Old Files Finder**: Locate space-hogging files
+- **Optimization Tools**: Memory optimizer, startup manager
+- **Maintenance Scripts**: System maintenance routines
+- **Security Scanner**: Malware and virus detection
+- **Real-time Monitoring**: System performance tracking
 
-### 3. **Large & Old Files Finder**
+## Technology Stack
 
-- Find files over 100MB, 1GB, or 5GB
-- Identify files not accessed in 6+ months
-- Duplicate file detection
-- Export detailed reports
+- **Frontend**: React 19 + TypeScript + Vite
+- **Desktop Framework**: Electron 37.x
+- **Backend**: Firebase (Auth, Firestore, Functions, Storage)
+- **UI Components**: Tailwind CSS + shadcn/ui + PrimeReact
+- **State Management**: Zustand
+- **API Layer**: Tanstack Query + Axios
+- **Routing**: Tanstack Router
 
-### 4. **App Uninstaller**
+## Prerequisites
 
-- Complete app removal including all related files
-- Batch uninstall support
-- Leftover file detection
-- Safe uninstall process
-
-### 5. **Privacy Cleaner**
-
-- Browser cache and history cleanup
-- Chat application history
-- Download history
-- Recent document cleanup
-
-### 6. **Optimization Tools**
-
-- Startup item management
-- Memory optimization
-- Process management
-- System performance tuning
-
-### 7. **Maintenance Scripts**
-
-- Run system maintenance
-- Repair disk permissions
-- Rebuild databases
-- Update system caches
-
-### 8. **Security Scanner**
-
-- Check for suspicious processes
-- Identify potential malware
-- Review system integrity
-
-## 📋 Requirements
-
+- Node.js 24.2.0 or higher (use .nvmrc)
+- Yarn package manager
 - macOS 10.15 or later
-- Administrator password for some operations
-- Basic command line knowledge
-- At least 1GB free disk space
+- Firebase project setup
 
-## 🛠️ Installation
+## Installation
 
-1. **Create the CleanMyMac Pro+ directory:**
-
+1. Clone the repository:
 ```bash
-mkdir -p ~/CleanMyMacPro
-cd ~/CleanMyMacPro
+git clone https://github.com/yourusername/cleanmymac-pro.git
+cd cleanmymac-pro
 ```
 
-2. **Create the modules directory:**
-
+2. Install dependencies:
 ```bash
-mkdir -p modules
+yarn install
 ```
 
-3. **Save the main script:**
-
+3. Set up environment variables:
 ```bash
-# Copy the main menu script content to:
-nano ~/CleanMyMacPro/cleanmymac.sh
+cp .env.example .env
 ```
 
-4. **Save each module:**
-
-```bash
-# Copy each module script to the modules directory:
-nano ~/CleanMyMacPro/modules/smart_scan.sh
-nano ~/CleanMyMacPro/modules/system_junk.sh
-nano ~/CleanMyMacPro/modules/large_files.sh
-nano ~/CleanMyMacPro/modules/app_uninstaller.sh
-# ... etc for each module
+Edit `.env` and add your Firebase configuration:
+```
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
 ```
 
-5. **Make all scripts executable:**
+## Development
+
+Run the application in development mode:
 
 ```bash
-chmod +x ~/CleanMyMacPro/cleanmymac.sh
-chmod +x ~/CleanMyMacPro/modules/*.sh
+yarn electron:dev
 ```
 
-6. **Create an alias for easy access (optional):**
+This will start both the Vite dev server and the Electron application with hot reload.
+
+### Other development commands:
 
 ```bash
-echo "alias cleanmymac='~/CleanMyMacPro/cleanmymac.sh'" >> ~/.zshrc
-source ~/.zshrc
+# Run only the web version
+yarn dev
+
+# Build the application
+yarn build
+
+# Type checking
+yarn typecheck
+
+# Linting
+yarn lint
 ```
 
-## 🎯 Usage
+## Building for Production
 
-### Basic Usage
-
+### Build for macOS:
 ```bash
-# Run the main menu
-~/CleanMyMacPro/cleanmymac.sh
-
-# Or if you created an alias
-cleanmymac
+yarn dist:mac
 ```
 
-### Direct Module Access
-
+### Build Universal binary (Intel + Apple Silicon):
 ```bash
-# Run specific modules directly
-~/CleanMyMacPro/modules/smart_scan.sh
-~/CleanMyMacPro/modules/large_files.sh
-~/CleanMyMacPro/modules/app_uninstaller.sh
+yarn dist:universal
 ```
 
-## 🔒 Safety Features
-
-1. **Confirmation Prompts**: All destructive operations require explicit confirmation
-2. **Backup Creation**: Option to backup files before deletion
-3. **Safe Locations Only**: Only cleans known safe directories
-4. **System File Protection**: Never touches critical system files
-5. **Dry Run Options**: Preview what will be deleted before committing
-
-## ⚠️ Important Notes
-
-### What It WON'T Delete:
-
-- System files required for macOS
-- Your personal documents, photos, or projects
-- Application data for currently installed apps
-- Files in iCloud Drive
-- Time Machine backups
-
-### What It WILL Clean (with permission):
-
-- Cache files for uninstalled apps
-- Old log files (30+ days)
-- Temporary files
-- Downloads folder cruft (DMGs, duplicates)
-- Browser caches
-- Old iOS device backups
-- Xcode derived data
-
-## 🎨 Customization
-
-### Modify Thresholds
-
-Edit the script constants to adjust:
-
-- File size thresholds for "large" files
-- Age thresholds for "old" files
-- Cache retention periods
-
-### Add Custom Paths
-
-Add your own directories to scan:
-
+### Build for Mac App Store:
 ```bash
-# In any module, add to the search paths:
-local search_paths=(
-    "$HOME/YourCustomPath"
-    "/Another/Path"
-)
+yarn dist:mas
 ```
 
-## 🐛 Troubleshooting
+The built application will be in the `release/` directory.
 
-### Permission Errors
+## Project Structure
 
-Some operations require administrator access:
+```
+cleanmymac-pro/
+├── electron/           # Electron main process entry
+├── src/
+│   ├── main/          # Electron main process modules
+│   │   ├── handlers/  # IPC handlers
+│   │   └── utils/     # Main process utilities
+│   ├── renderer/      # React application
+│   │   ├── components/
+│   │   ├── lib/       # Utilities and helpers
+│   │   ├── pages/     # Route pages
+│   │   └── stores/    # Zustand stores
+│   └── shared/        # Shared types and constants
+├── functions/         # Firebase Functions
+├── build/            # Build assets (icons, entitlements)
+├── docs-site/        # Documentation website (Docusaurus)
+└── release/          # Built applications
+```
 
+## Firebase Functions
+
+The project includes Firebase Functions for backend operations. To work with functions:
+
+1. Navigate to functions directory:
 ```bash
-sudo ~/CleanMyMacPro/modules/system_junk.sh
+cd functions
 ```
 
-### Script Not Found
-
-Ensure all scripts are executable:
-
+2. Install dependencies:
 ```bash
-ls -la ~/CleanMyMacPro/
-chmod +x ~/CleanMyMacPro/*.sh
-chmod +x ~/CleanMyMacPro/modules/*.sh
+npm install
 ```
 
-### Module Errors
-
-Check that all modules are in the correct location:
-
+3. Deploy functions:
 ```bash
-tree ~/CleanMyMacPro/
+npm run deploy
 ```
 
-## 📊 Performance Tips
+## Security Considerations
 
-1. **Run regularly**: Weekly maintenance keeps your Mac fast
-2. **Restart after major cleanup**: Ensures all caches are rebuilt properly
-3. **Keep 10% free space**: macOS needs free space to operate efficiently
-4. **Review before deleting**: Always check what will be removed
+- The application requests full disk access for system cleaning operations
+- All file operations include safety checks and user confirmations
+- Sensitive operations require explicit user approval
+- Firebase security rules enforce user data isolation
 
-## 🤝 Contributing
+## Contributing
 
-This is an open-source project. Feel free to:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-- Add new cleaning modules
-- Improve existing algorithms
-- Add safety checks
-- Enhance the user interface
+## License
 
-## ⚖️ License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-This software is provided as-is, without warranty. Use at your own risk. Always maintain backups of important data.
+## Support
 
-## 🆘 Support
+For support, email support@cleanmymacpro.com or open an issue in the GitHub repository.
 
-For issues or questions:
+## Acknowledgments
 
-1. Check the script comments for detailed explanations
-2. Run modules with `-h` flag for help (if implemented)
-3. Review the safety features section before reporting "bugs"
-
-## 🎉 Advanced Features Coming Soon
-
-- [ ] Scheduled automatic cleanup
-- [ ] Cloud storage cleanup
-- [ ] Photo library optimization
-- [ ] Mail attachment management
-- [ ] Network drive cleanup
-- [ ] Custom cleanup profiles
-- [ ] Cleanup history and undo
-
----
-
-**Remember**: The best cleaner is the one that keeps your data safe while improving performance. CleanMyMac Pro+ prioritizes safety over aggressive cleaning.
-
-Stay clean, stay fast! 🚀
-
-#### Extra Info
-
-CleanMyMac X Features:
-
-Smart Scan - One-click system scan and cleanup
-System Junk - Clean caches, logs, broken files
-Mail Attachments - Clean email downloads and attachments
-Photo Junk - Clean Photos library cache
-Trash Bins - Empty all trash bins
-Malware Removal - Scan for malicious software
-Privacy - Clear browsing data, chat history
-Optimization - Manage startup items, heavy consumers
-Maintenance - Run system maintenance scripts
-Uninstaller - Complete app removal with all files
-Updater - Update all apps at once
-Extensions - Manage Safari/Chrome extensions
-Space Lens - Visual disk space analyzer
-Large & Old Files - Find space wasters
-Shredder - Secure file deletion
-
-#### More Info
-
-Summary: CleanMyMac Pro+ Script Suite
-I've created a comprehensive, free alternative to CleanMyMac X with the following components:
-✅ Created Modules:
-
-Main Menu Script (cleanmymac.sh)
-
-Beautiful CLI interface with color coding
-Central hub for all cleaning operations
-Safety checks and requirements validation
-
-Smart Scan Module (smart_scan.sh)
-
-All-in-one system analysis
-Combines multiple cleaning operations
-Progress tracking and detailed reporting
-
-System Junk Module (system_junk.sh)
-
-Deep system cache cleaning
-Log file management
-Temporary file cleanup
-Language file removal
-
-Large Files Finder (large_files.sh)
-
-Find files by size (>100MB, >1GB, >5GB)
-Identify old unused files
-Duplicate detection
-Interactive file management
-
-App Uninstaller (app_uninstaller.sh)
-
-Complete app removal with all associated files
-Batch uninstall capability
-Leftover file detection
-LaunchServices cleanup
-
-🔧 Additional Modules Needed:
-To complete the suite, you would need these additional modules:
-
-Privacy Cleaner (privacy_cleaner.sh)
-Mail Cleanup (mail_cleanup.sh)
-Photo Cleanup (photo_cleanup.sh)
-Optimization Tools (optimization.sh)
-Maintenance Scripts (maintenance.sh)
-Disk Analyzer (disk_analyzer.sh)
-Security Scanner (security_scanner.sh)
-Extensions Manager (extensions_manager.sh)
-Empty Trash (empty_trash.sh)
-Secure Shredder (secure_shredder.sh)
-System Info (system_info.sh)
-
-🎯 Key Features Implemented:
-
-Safety First: Multiple confirmation prompts, backup options
-Intelligent Detection: Smart algorithms to identify junk without touching important files
-Beautiful UI: Color-coded terminal interface with progress bars
-Comprehensive Logging: Detailed feedback on all operations
-Modular Design: Each feature is independent and can be run separately
-No Dependencies: Pure bash implementation, works on any Mac
-
-💡 Usage Example:
-bash# Set up the suite
-cd ~
-git clone [your-repo] CleanMyMacPro
-cd CleanMyMacPro
-chmod +x cleanmymac.sh
-chmod +x modules/\*.sh
-
-# Run the main program
-
-./cleanmymac.sh
-
-# Or run specific modules
-
-./modules/large_files.sh
-./modules/app_uninstaller.sh
-🔒 Safety Features:
-
-Never deletes without permission
-Skips system-critical files
-Creates backups before major operations
-Dry-run options to preview changes
-Clear explanations of what will be removed
-
-This is a powerful, free alternative to CleanMyMac X that gives you complete control over your system cleaning.
+- Built with Electron, React, and Firebase
+- UI components from PrimeReact and shadcn/ui
+- Icons from Lucide React

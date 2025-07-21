@@ -4,6 +4,7 @@ import { registerScannerHandlers } from '../src/main/ipc/scanner';
 import { registerDiskHealthHandlers } from '../src/main/ipc/diskHealth';
 import { registerAppUninstallerHandlers } from '../src/main/ipc/appUninstaller';
 import { registerPrivacyCleanerHandlers } from '../src/main/ipc/privacyCleaner';
+import { registerCleanerHandlers } from '../src/main/ipc/cleaner';
 import { registerBookmarkHandlers } from '../src/main/utils/bookmarks';
 import { updater } from '../src/main/utils/auto-updater';
 
@@ -66,6 +67,7 @@ registerScannerHandlers();
 registerDiskHealthHandlers();
 registerAppUninstallerHandlers();
 registerPrivacyCleanerHandlers();
+registerCleanerHandlers();
 registerBookmarkHandlers();
 updater.registerIpcHandlers();
 

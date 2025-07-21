@@ -110,9 +110,9 @@ cleanmymac-pro/
 7. [ ] Build core cleaning modules
 
 ### Low Priority
-8. [ ] Create bash scripts for system operations
-9. [ ] Set up IPC communication for system operations
-10. [ ] Configure electron-builder for macOS distribution
+8. [ ] Implement advanced system operations modules
+9. [ ] Add real-time monitoring capabilities
+10. [ ] Create comprehensive test suite
 
 ## Environment Setup Required
 

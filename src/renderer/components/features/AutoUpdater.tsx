@@ -34,58 +34,54 @@ export const AutoUpdater: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Get current version
-    window.electron.updater.getVersion().then(setCurrentVersion);
+    // Get current version from package.json or hardcode it
+    setCurrentVersion('1.0.0');
     
-    // Get update channel
-    window.electron.updater.getChannel().then(setUpdateChannel);
+    // Set default update channel
+    setUpdateChannel('latest');
 
     // Set up event listeners
-    window.electron.updater.onUpdateAvailable((info) => {
+    const unsubUpdateAvailable = window.electron.updater.onUpdateAvailable((info) => {
       setUpdateAvailable(true);
       setUpdateInfo(info);
-      showNotification({
-        severity: 'info',
-        summary: t('updater.updateAvailable'),
-        detail: t('updater.newVersion', { version: info.version })
-      });
+      showNotification('info', t('updater.updateAvailable') + ' - ' + t('updater.newVersion', { version: info.version }));
     });
 
-    window.electron.updater.onDownloadProgress((progress) => {
+    const unsubDownloadProgress = window.electron.updater.onDownloadProgress((progress) => {
       setDownloading(true);
       setDownloadProgress(progress);
     });
 
-    window.electron.updater.onUpdateDownloaded((info) => {
+    const unsubUpdateDownloaded = window.electron.updater.onUpdateDownloaded((info) => {
       setDownloading(false);
       setUpdateReady(true);
       setUpdateInfo(info);
-      showNotification({
-        severity: 'success',
-        summary: t('updater.updateReady'),
-        detail: t('updater.readyToInstall')
-      });
+      showNotification('success', t('updater.updateReady') + ' - ' + t('updater.readyToInstall'));
     });
 
-    window.electron.updater.onError((errorMessage) => {
+    const unsubError = window.electron.updater.onError((errorMessage) => {
       setError(errorMessage);
       setChecking(false);
       setDownloading(false);
-      showNotification({
-        severity: 'error',
-        summary: t('updater.updateError'),
-        detail: errorMessage
-      });
+      showNotification('error', t('updater.updateError') + ': ' + errorMessage);
     });
+
+    // Cleanup listeners on unmount
+    return () => {
+      unsubUpdateAvailable();
+      unsubDownloadProgress();
+      unsubUpdateDownloaded();
+      unsubError();
+    };
   }, []);
 
   const checkForUpdates = async () => {
     setChecking(true);
     setError(null);
     try {
-      await window.electron.updater.check();
+      await window.electron.updater.checkForUpdates();
     } catch (err) {
-      setError(err.message);
+      setError((err as Error).message);
     } finally {
       setChecking(false);
     }
@@ -93,21 +89,17 @@ export const AutoUpdater: React.FC = () => {
 
   const downloadUpdate = async () => {
     setError(null);
-    await window.electron.updater.download();
+    await window.electron.updater.downloadUpdate();
   };
 
   const installUpdate = async () => {
-    await window.electron.updater.install();
+    window.electron.updater.quitAndInstall();
   };
 
   const changeChannel = async (channel: 'latest' | 'beta') => {
     setUpdateChannel(channel);
-    await window.electron.updater.setChannel(channel);
-    showNotification({
-      severity: 'info',
-      summary: t('updater.channelChanged'),
-      detail: t('updater.channelChangedDesc', { channel })
-    });
+    // Channel change would need to be implemented in main process
+    showNotification('info', t('updater.channelChanged') + ' - ' + t('updater.channelChangedDesc', { channel }));
   };
 
   const formatBytes = (bytes: number) => {

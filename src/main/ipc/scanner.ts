@@ -1,9 +1,11 @@
 import { ipcMain, BrowserWindow } from 'electron';
 import { PreAuthScanner } from '../modules/pre-auth-scanner';
+import { AuthenticatedScanner } from '../modules/authenticated-scanner';
 import type { ScanProgress, ScanSummary } from '../../shared/types/scan';
 
 export function registerScannerHandlers() {
-  const scanner = new PreAuthScanner();
+  const preAuthScanner = new PreAuthScanner();
+  const authenticatedScanner = new AuthenticatedScanner();
 
   // Pre-auth scan handler
   ipcMain.handle('pre-auth-scan', async (event) => {
@@ -16,7 +18,7 @@ export function registerScannerHandlers() {
     };
 
     try {
-      const results = await scanner.performQuickScan(onProgress);
+      const results = await preAuthScanner.performQuickScan(onProgress);
       return results;
     } catch (error) {
       console.error('Scan error:', error);
@@ -34,8 +36,8 @@ export function registerScannerHandlers() {
     };
 
     try {
-      // TODO: Implement full scan based on user plan
-      const results = await scanner.performFullScan(options, onProgress);
+      // Use authenticated scanner to return actual file paths
+      const results = await authenticatedScanner.performFullScan(options, onProgress);
       return results;
     } catch (error) {
       console.error('Full scan error:', error);
@@ -54,7 +56,7 @@ export function registerScannerHandlers() {
 
     try {
       // Start the scan in background
-      scanner.performQuickScan(onProgress).then(results => {
+      preAuthScanner.performQuickScan(onProgress).then(results => {
         win.webContents.send('scan:complete', results);
       });
       
@@ -78,12 +80,13 @@ export function registerScannerHandlers() {
 
   // Cancel scan handler
   ipcMain.handle('cancel-scan', async () => {
-    scanner.cancelScan();
+    preAuthScanner.cancelScan();
+    authenticatedScanner.cancelScan();
     return { success: true };
   });
 
   // Get system info
   ipcMain.handle('get-system-info', async () => {
-    return scanner.getSystemInfo();
+    return preAuthScanner.getSystemInfo();
   });
 }
